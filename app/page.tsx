@@ -35,7 +35,7 @@ async function tempGetData() {
   return {
     hint: "temporary",
     initials: "N.S!",
-    answer: "Lou Reed",
+    answer: "NSYNC",
     id: "1220",
   };
 }

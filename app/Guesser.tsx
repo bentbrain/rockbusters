@@ -29,7 +29,10 @@ function Guesser({ hint, initials, answer, id }: Props) {
   const [guesses, setGuesses] = useState<String[]>([]);
   const artists = Artists();
 
-  const makeResultsString = () => {
+  const makeResultsString = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.currentTarget.innerText = "Copied";
     const guessCount = 3;
     const answerPosition = guesses.indexOf(decryptData(answer));
     let resultString = [];
@@ -166,8 +169,9 @@ ${resultString.join(" ")}`;
             Right, well done then 🍻
           </span>
           <button
-            onClick={() => {
-              navigator.clipboard.writeText(makeResultsString());
+            className="bg-green-600 text-white b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+            onClick={(e) => {
+              navigator.clipboard.writeText(makeResultsString(e));
             }}
           >
             Share
@@ -179,8 +183,9 @@ ${resultString.join(" ")}`;
             Answer was {decryptData(answer)}. Bollocks. Play a record.
           </span>
           <button
-            onClick={() => {
-              navigator.clipboard.writeText(makeResultsString());
+            className="bg-green-600 text-white  b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+            onClick={(e) => {
+              navigator.clipboard.writeText(makeResultsString(e));
             }}
           >
             Share
