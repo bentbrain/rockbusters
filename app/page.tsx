@@ -20,21 +20,35 @@ async function getData() {
   return res.json();
 }
 
-// async function tempGetData() {
-//   return {
-//     hint: "temporary",
-//     initials: "temporary",
-//     answer: "temporary",
-//   };
-// }
+async function tempGetData() {
+  return {
+    hint: "temporary",
+    initials: "N.S!",
+    answer: "temporary",
+  };
+}
 
 async function Home() {
   const question = await getData();
 
   return (
     <div>
+      <img className="h-14" src="/karl.png" alt="Karl Pilkington Head" />
       <h1 className="text-3xl mb-2">{question.hint}</h1>
-      <h2 className="text-xl mb-1">Initials: {question.initials}</h2>
+
+      <h2 className="text-xl mb-1">
+        Initials:{" "}
+        {question.initials.includes("!") ? (
+          <dfn
+            title="Remember, Karl is a moron – this could be wrong"
+            className="underline decoration-dotted"
+          >
+            {question.initials.replace("!", "")}
+          </dfn>
+        ) : (
+          question.initials
+        )}
+      </h2>
       <Guesser
         hint={question.hint}
         initials={question.initials}

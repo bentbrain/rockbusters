@@ -51,7 +51,7 @@ function Guesser({ hint, initials, answer }: Props) {
               }
               options={options}
             />
-            <button className="bg-blue-600 w-min mx-auto px-2 leading-none font-bold text-white rounded-full">
+            <button className="bg-[#ffb3b6] w-min mx-auto px-2 leading-none font-bold rounded-full">
               Submit
             </button>
           </>
