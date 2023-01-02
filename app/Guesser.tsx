@@ -3,12 +3,23 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import Artists from "./artists";
 import Select from "react-select";
+import CryptoJS from "crypto-js";
 
 type Props = {
   hint: string;
   initials: string;
   answer: string;
   id: string;
+};
+
+const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
+
+const decryptData = (text: string) => {
+  const bytes = CryptoJS.AES.decrypt(text, cryptKey ? cryptKey : "cryptKey");
+  console.log(bytes);
+  const data = bytes.toString(CryptoJS.enc.Utf8);
+
+  return data;
 };
 
 function Guesser({ hint, initials, answer, id }: Props) {
@@ -32,7 +43,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
         setPlayable(false);
       }
       setGuesses(sessionGuesses.guesses);
-      if (sessionGuesses.guesses.includes(answer)) {
+      if (sessionGuesses.guesses.includes(decryptData(answer))) {
         setCorrect(true);
         setPlayable(false);
       }
@@ -53,7 +64,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
     window.localStorage.setItem("current_answer", JSON.stringify(id));
 
     setGuesses((guesses) => [...guesses, selection]);
-    if (selection == answer) {
+    if (selection == decryptData(answer)) {
       setCorrect(true);
       setPlayable(false);
     } else {
@@ -80,7 +91,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
         <div
           className={`guess ${
             guesses[0]
-              ? guesses[0] == answer
+              ? guesses[0] == decryptData(answer)
                 ? "bg-green-100"
                 : "bg-red-100"
               : "bg-slate-100"
@@ -91,7 +102,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
         <div
           className={`guess ${
             guesses[1]
-              ? guesses[1] == answer
+              ? guesses[1] == decryptData(answer)
                 ? "bg-green-100"
                 : "bg-red-100"
               : "bg-slate-100"
@@ -102,7 +113,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
         <div
           className={`guess ${
             guesses[2]
-              ? guesses[2] == answer
+              ? guesses[2] == decryptData(answer)
                 ? "bg-green-100"
                 : "bg-red-100"
               : "bg-slate-100"
@@ -139,7 +150,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
           </span>
         ) : (
           <span className="col-span-4" id="fail">
-            Bollocks. Play a record.
+            Answer was {decryptData(answer)}. Bollocks. Play a record.
           </span>
         )}
       </form>

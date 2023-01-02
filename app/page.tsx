@@ -1,8 +1,10 @@
 import React from "react";
 import sanityClient from "./client.js";
 import Guesser from "./Guesser";
+import CryptoJS from "crypto-js";
 
 const fetchURL = process.env.FETCH_URL;
+const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 async function getData() {
   const res = await fetch(`${fetchURL}api/question`, {
@@ -20,6 +22,15 @@ async function getData() {
   return res.json();
 }
 
+const encryptData = (text: string) => {
+  const encrypted = CryptoJS.AES.encrypt(
+    text,
+    cryptKey ? cryptKey : "somethingElse"
+  ).toString();
+
+  return encrypted;
+};
+
 async function tempGetData() {
   return {
     hint: "temporary",
@@ -31,8 +42,6 @@ async function tempGetData() {
 
 async function Home() {
   const question = await getData();
-
-  console.log(question);
 
   return (
     <div>
@@ -56,7 +65,7 @@ async function Home() {
         id={question.id}
         hint={question.hint}
         initials={question.initials}
-        answer={question.answer}
+        answer={encryptData(question.answer)}
       />
     </div>
   );
