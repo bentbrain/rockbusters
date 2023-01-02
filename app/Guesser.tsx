@@ -23,6 +23,8 @@ function Guesser({ hint, initials, answer, id }: Props) {
     const currentAnswer = window.localStorage.getItem("current_answer");
     if (
       gameData != null &&
+      currentAnswer != null &&
+      currentAnswer != undefined &&
       JSON.parse(currentAnswer ? currentAnswer : "else") == id
     ) {
       const sessionGuesses = JSON.parse(gameData);
