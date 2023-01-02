@@ -21,12 +21,18 @@ function Guesser({ hint, initials, answer, id }: Props) {
   useEffect(() => {
     const gameData = window.localStorage.getItem("rockbusters_game");
     const currentAnswer = window.localStorage.getItem("current_answer");
-    if (gameData != null && currentAnswer == answer) {
+    if (
+      gameData != null &&
+      JSON.parse(currentAnswer ? currentAnswer : "else") == id
+    ) {
       const sessionGuesses = JSON.parse(gameData);
       if (sessionGuesses.guesses.length >= 3) {
         setPlayable(false);
       }
       setGuesses(sessionGuesses.guesses);
+      if (sessionGuesses.guesses.includes(answer)) {
+        setCorrect(true);
+      }
     }
   }, []);
 
@@ -125,9 +131,13 @@ function Guesser({ hint, initials, answer, id }: Props) {
             </button>
           </>
         ) : correct ? (
-          <span id="correct"></span>
+          <span className="col-span-4" id="correct">
+            Right, well done then 🍻
+          </span>
         ) : (
-          <span id="fail"></span>
+          <span className="col-span-4" id="fail">
+            Bollocks. Play a record.
+          </span>
         )}
       </form>
     </div>

@@ -24,12 +24,13 @@ async function tempGetData() {
   return {
     hint: "temporary",
     initials: "N.S!",
-    answer: "temporary",
+    answer: "Lou Reed",
+    id: "1220",
   };
 }
 
 async function Home() {
-  const question = await getData();
+  const question = await tempGetData();
 
   console.log(question);
 
