@@ -32,6 +32,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
       setGuesses(sessionGuesses.guesses);
       if (sessionGuesses.guesses.includes(answer)) {
         setCorrect(true);
+        setPlayable(false);
       }
     }
   }, []);
