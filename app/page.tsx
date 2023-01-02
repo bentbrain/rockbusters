@@ -1,5 +1,6 @@
 import React from "react";
 import sanityClient from "./client.js";
+import Guesser from "./Guesser";
 
 const fetchURL = process.env.FETCH_URL;
 
@@ -19,12 +20,25 @@ async function getData() {
   return res.json();
 }
 
+// async function tempGetData() {
+//   return {
+//     hint: "temporary",
+//     initials: "temporary",
+//     answer: "temporary",
+//   };
+// }
+
 async function Home() {
   const question = await getData();
 
   return (
     <div>
       <h1>{question.hint}</h1>
+      <Guesser
+        hint={question.hint}
+        initials={question.initials}
+        answer={question.answer}
+      />
     </div>
   );
 }
