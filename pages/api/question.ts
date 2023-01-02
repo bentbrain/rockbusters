@@ -7,6 +7,7 @@ type Data = {
   hint: string;
   initials: string;
   answer: string;
+  id: string;
 };
 
 type Question = {
@@ -113,5 +114,6 @@ export default async function handler(
     hint: question.hint,
     initials: question.initials,
     answer: question.answer,
+    id: question._id,
   });
 }

@@ -31,6 +31,8 @@ async function tempGetData() {
 async function Home() {
   const question = await getData();
 
+  console.log(question);
+
   return (
     <div>
       <img className="h-14" src="/karl.png" alt="Karl Pilkington Head" />
@@ -50,7 +52,7 @@ async function Home() {
         )}
       </h2>
       <Guesser
-        id={question._id}
+        id={question.id}
         hint={question.hint}
         initials={question.initials}
         answer={question.answer}
