@@ -30,7 +30,7 @@ async function tempGetData() {
 }
 
 async function Home() {
-  const question = await tempGetData();
+  const question = await getData();
 
   console.log(question);
 
