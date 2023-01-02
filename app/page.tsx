@@ -6,7 +6,7 @@ const fetchURL = process.env.FETCH_URL;
 
 async function getData() {
   const res = await fetch(`${fetchURL}api/question`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 60 * 60 * 24 },
   });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
