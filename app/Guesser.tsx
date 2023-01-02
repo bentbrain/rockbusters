@@ -4,6 +4,7 @@ import React, { FormEvent, useState, useEffect } from "react";
 import Artists from "./artists";
 import Select from "react-select";
 import CryptoJS from "crypto-js";
+import { resourceUsage } from "process";
 
 type Props = {
   hint: string;
@@ -16,7 +17,6 @@ const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 const decryptData = (text: string) => {
   const bytes = CryptoJS.AES.decrypt(text, cryptKey ? cryptKey : "cryptKey");
-  console.log(bytes);
   const data = bytes.toString(CryptoJS.enc.Utf8);
 
   return data;
@@ -28,6 +28,24 @@ function Guesser({ hint, initials, answer, id }: Props) {
   const [selection, setSelection] = useState("");
   const [guesses, setGuesses] = useState<String[]>([]);
   const artists = Artists();
+
+  const makeResultsString = () => {
+    const guessCount = 3;
+    const answerPosition = guesses.indexOf(decryptData(answer));
+    let resultString = [];
+
+    if (answerPosition < 0)
+      return `https://rockbusters.vercel.app/
+
+⬜️ ⬜️ ⬜️`;
+
+    for (var i = 0; i < guessCount; i++) {
+      i == answerPosition ? resultString.push("🟩") : resultString.push("⬜️");
+    }
+    return `https://rockbusters.vercel.app/
+
+${resultString.join(" ")}`;
+  };
 
   useEffect(() => {
     const gameData = window.localStorage.getItem("rockbusters_game");
@@ -68,6 +86,7 @@ function Guesser({ hint, initials, answer, id }: Props) {
       setCorrect(true);
       setPlayable(false);
     } else {
+      console.log("changed");
       setCorrect(false);
     }
     if (guesses.length == 2) {
@@ -122,38 +141,52 @@ function Guesser({ hint, initials, answer, id }: Props) {
           <p>{guesses[2]} &nbsp;</p>
         </div>
       </div>
-      <form
-        className="grid grid-cols-4 items-center"
-        onSubmit={(e) => handleSubmit(e)}
-        action=""
-      >
-        {playable ? (
-          <>
-            <Select
-              id="selector"
-              className="col-span-3"
-              onChange={(value) =>
-                setSelection(value ? value.value : selection)
-              }
-              options={options}
-            />
-            <button
-              disabled={selection ? false : true}
-              className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
-            >
-              Submit
-            </button>
-          </>
-        ) : correct ? (
+      {playable ? (
+        <form
+          className="grid grid-cols-4 items-center"
+          onSubmit={(e) => handleSubmit(e)}
+          action=""
+        >
+          <Select
+            id="selector"
+            className="col-span-3"
+            onChange={(value) => setSelection(value ? value.value : selection)}
+            options={options}
+          />
+          <button
+            disabled={selection ? false : true}
+            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+          >
+            Submit
+          </button>
+        </form>
+      ) : correct ? (
+        <div className="flex col-span-4 justify-between gap-4">
           <span className="col-span-4" id="correct">
             Right, well done then 🍻
           </span>
-        ) : (
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(makeResultsString());
+            }}
+          >
+            Share
+          </button>
+        </div>
+      ) : (
+        <div className="flex col-span-4 justify-between gap-4">
           <span className="col-span-4" id="fail">
             Answer was {decryptData(answer)}. Bollocks. Play a record.
           </span>
-        )}
-      </form>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(makeResultsString());
+            }}
+          >
+            Share
+          </button>
+        </div>
+      )}
     </div>
   );
 }

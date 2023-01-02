@@ -47,7 +47,6 @@ async function Home() {
     <div>
       <img className="h-14" src="/karl.png" alt="Karl Pilkington Head" />
       <h1 className="text-3xl mb-2">{question.hint}</h1>
-
       <h2 className="text-xl mb-1">
         Initials:{" "}
         {question.initials.includes("!") ? (
