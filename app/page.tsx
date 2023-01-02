@@ -34,6 +34,7 @@ async function Home() {
   return (
     <div>
       <h1>{question.hint}</h1>
+      <h2>Initials: {question.initials}</h2>
       <Guesser
         hint={question.hint}
         initials={question.initials}

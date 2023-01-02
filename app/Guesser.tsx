@@ -12,13 +12,16 @@ type Props = {
 
 function Guesser({ hint, initials, answer }: Props) {
   const [playable, setPlayable] = useState(true);
-  const [correct, setCorrect] = useState("wrong");
+  const [correct, setCorrect] = useState("");
   const [selection, setSelection] = useState("Initial Value");
   const artists = Artists();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (selection == answer) {
       setCorrect("correct");
+    } else {
+      setCorrect("wrong");
     }
   };
 
