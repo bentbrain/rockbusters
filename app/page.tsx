@@ -50,6 +50,7 @@ async function Home() {
         )}
       </h2>
       <Guesser
+        id={question._id}
         hint={question.hint}
         initials={question.initials}
         answer={question.answer}

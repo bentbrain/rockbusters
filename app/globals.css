@@ -2,7 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-
-main:has(#correct) {
-  background-color: rgb(214, 255, 214);
-}
