@@ -20,6 +20,7 @@ function Guesser({ hint, initials, answer }: Props) {
     e.preventDefault();
     if (selection == answer) {
       setCorrect("correct");
+      setPlayable(false);
     } else {
       setCorrect("wrong");
     }
@@ -32,18 +33,31 @@ function Guesser({ hint, initials, answer }: Props) {
     };
   });
 
-  console.log(options);
-
   return (
     <div>
       <h3>{correct}</h3>
-      <form onSubmit={(e) => handleSubmit(e)} action="">
-        <Select
-          id="selector"
-          onChange={(value) => setSelection(value ? value.value : selection)}
-          options={options}
-        />
-        <button>Submit</button>
+      <form
+        className="grid grid-cols-4"
+        onSubmit={(e) => handleSubmit(e)}
+        action=""
+      >
+        {playable ? (
+          <>
+            <Select
+              id="selector"
+              className="col-span-3"
+              onChange={(value) =>
+                setSelection(value ? value.value : selection)
+              }
+              options={options}
+            />
+            <button className="bg-blue-600 w-min mx-auto px-2 leading-none font-bold text-white rounded-full">
+              Submit
+            </button>
+          </>
+        ) : (
+          <span id="correct"></span>
+        )}
       </form>
     </div>
   );

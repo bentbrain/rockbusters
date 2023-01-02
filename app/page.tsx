@@ -33,8 +33,8 @@ async function Home() {
 
   return (
     <div>
-      <h1>{question.hint}</h1>
-      <h2>Initials: {question.initials}</h2>
+      <h1 className="text-3xl mb-2">{question.hint}</h1>
+      <h2 className="text-xl mb-1">Initials: {question.initials}</h2>
       <Guesser
         hint={question.hint}
         initials={question.initials}
