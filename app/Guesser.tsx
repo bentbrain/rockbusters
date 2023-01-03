@@ -11,6 +11,7 @@ type Props = {
   initials: string;
   answer: string;
   id: string;
+  day: string;
 };
 
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
@@ -22,7 +23,7 @@ const decryptData = (text: string) => {
   return data;
 };
 
-function Guesser({ hint, initials, answer, id }: Props) {
+function Guesser({ hint, initials, answer, id, day }: Props) {
   const [playable, setPlayable] = useState(true);
   const [correct, setCorrect] = useState(false);
   const [selection, setSelection] = useState("");
@@ -38,16 +39,18 @@ function Guesser({ hint, initials, answer, id }: Props) {
     let resultString = [];
 
     if (answerPosition < 0)
-      return `https://rockbusters.vercel.app/
+      return `Rockbusters #${day}
 
-⬜️ ⬜️ ⬜️`;
+🙈 ⬜️ ⬜️ ⬜️
+https://rockbusters.vercel.app/`;
 
     for (var i = 0; i < guessCount; i++) {
       i == answerPosition ? resultString.push("🟩") : resultString.push("⬜️");
     }
-    return `https://rockbusters.vercel.app/
+    return `Rockbusters #${day}
 
-${resultString.join(" ")}`;
+🙊 ${resultString.join(" ")}
+https://rockbusters.vercel.app/`;
   };
 
   useEffect(() => {
@@ -109,7 +112,7 @@ ${resultString.join(" ")}`;
 
   return (
     <div>
-      <div className="guesses flex flex-col gap-2  [&>*]:p-2 my-4 [&>*]:rounded-md">
+      <div className="guesses flex flex-col gap-2  [&>*]:p-2 my-4 [&>*]:rounded-md text-center">
         <div
           className={`guess ${
             guesses[0]
@@ -146,7 +149,7 @@ ${resultString.join(" ")}`;
       </div>
       {playable ? (
         <form
-          className="grid grid-cols-4 items-center"
+          className="grid grid-cols-4 gap-2 items-center"
           onSubmit={(e) => handleSubmit(e)}
           action=""
         >
@@ -158,18 +161,18 @@ ${resultString.join(" ")}`;
           />
           <button
             disabled={selection ? false : true}
-            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded-full "
           >
             Submit
           </button>
         </form>
       ) : correct ? (
-        <div className="flex col-span-4 justify-between gap-4">
+        <div className="flex flex-col col-span-4 justify-center items-center gap-1">
           <span className="col-span-4" id="correct">
             Right, well done then 🍻
           </span>
           <button
-            className="bg-green-600 text-white b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+            className="bg-green-600 text-white b-2 w-min px-2 py-1 leading-none font-medium rounded-full "
             onClick={(e) => {
               navigator.clipboard.writeText(makeResultsString(e));
             }}
@@ -178,12 +181,13 @@ ${resultString.join(" ")}`;
           </button>
         </div>
       ) : (
-        <div className="flex col-span-4 justify-between gap-4">
-          <span className="col-span-4" id="fail">
-            Answer was {decryptData(answer)}. Bollocks. Play a record.
+        <div className="flex flex-col col-span-4 justify-center items-center gap-1">
+          <span className="mx-auto text-center" id="fail">
+            Answer was <span className="font-bold">{decryptData(answer)}</span>.
+            Play a record.
           </span>
           <button
-            className="bg-green-600 text-white  b-2 w-min ml-auto p-2 leading-none font-bold rounded-full "
+            className="bg-green-600 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded-full "
             onClick={(e) => {
               navigator.clipboard.writeText(makeResultsString(e));
             }}

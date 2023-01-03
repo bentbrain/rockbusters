@@ -7,18 +7,13 @@ const fetchURL = process.env.FETCH_URL;
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 async function getData() {
-  const res = await fetch(`${fetchURL}api/question`, {
-    next: { revalidate: 60 * 60 * 24 },
+  const res = await fetch(`${fetchURL}api/date-question`, {
+    next: { revalidate: 60 },
   });
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-
-  // Recommendation: handle errors
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
-
   return res.json();
 }
 
@@ -44,11 +39,10 @@ async function Home() {
   const question = await getData();
 
   return (
-    <div>
-      <img className="h-14" src="/karl.png" alt="Karl Pilkington Head" />
+    <div className="text-center">
       <h1 className="text-3xl mb-2">{question.hint}</h1>
       <h2 className="text-xl mb-1">
-        Initials:{" "}
+        <span className="font-medium">Initials: </span>
         {question.initials.includes("!") ? (
           <dfn
             title="Remember, Karl is a moron – this could be wrong"
@@ -64,6 +58,7 @@ async function Home() {
         id={question.id}
         hint={question.hint}
         initials={question.initials}
+        day={question.day}
         answer={encryptData(question.answer)}
       />
     </div>
