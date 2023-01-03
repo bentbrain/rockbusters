@@ -7,7 +7,9 @@ const fetchURL = process.env.FETCH_URL;
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 async function getData() {
-  const res = await fetch(`${fetchURL}api/datequestion`);
+  const res = await fetch(`${fetchURL}api/datequestion`, {
+    next: { revalidate: 60 },
+  });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
