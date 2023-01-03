@@ -161,18 +161,18 @@ https://rockbusters.vercel.app/`;
           />
           <button
             disabled={selection ? false : true}
-            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded-full "
+            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded "
           >
             Submit
           </button>
         </form>
       ) : correct ? (
-        <div className="flex flex-col col-span-4 justify-center items-center gap-1">
+        <div className="flex flex-col col-span-4 justify-center items-center gap-2">
           <span className="col-span-4" id="correct">
             Right, well done then 🍻
           </span>
           <button
-            className="bg-green-600 text-white b-2 w-min px-2 py-1 leading-none font-medium rounded-full "
+            className="bg-green-800 text-white b-2 w-min px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
               navigator.clipboard.writeText(makeResultsString(e));
             }}
@@ -181,13 +181,13 @@ https://rockbusters.vercel.app/`;
           </button>
         </div>
       ) : (
-        <div className="flex flex-col col-span-4 justify-center items-center gap-1">
+        <div className="flex flex-col col-span-4 justify-center items-center gap-2">
           <span className="mx-auto text-center" id="fail">
             Answer was <span className="font-bold">{decryptData(answer)}</span>.
             Play a record.
           </span>
           <button
-            className="bg-green-600 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded-full "
+            className="bg-green-800 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
               navigator.clipboard.writeText(makeResultsString(e));
             }}

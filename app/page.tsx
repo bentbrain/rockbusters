@@ -45,7 +45,9 @@ async function Home() {
 
   return (
     <div className="text-center">
-      <h1 className="text-3xl mb-2">{question.hint}</h1>
+      <h1 className="text-2xl font-bold mb-2">
+        #{question.day}: {question.hint}
+      </h1>
       <h2 className="text-xl mb-1">
         <span className="font-medium">Initials: </span>
         {question.initials.includes("!") ? (
