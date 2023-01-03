@@ -7,13 +7,16 @@ const fetchURL = process.env.FETCH_URL;
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 async function getData() {
-  const res = await fetch(`${fetchURL}api/date-question`, {
-    next: { revalidate: 60 },
-  });
+  const res = await fetch(`${fetchURL}api/datequestion`);
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  // Recommendation: handle errors
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
+
   return res.json();
 }
 

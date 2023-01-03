@@ -6,12 +6,9 @@ const difference = getNumberOfDays(startDate, currentDate);
 
 const calcDifference = (questions: any) => {
   const total = questions.length;
-  console.log("difference is: " + difference);
-  console.log("total is: " + total);
   if (difference >= total) {
     const amount = Math.floor(difference / total);
     var newDiff = difference - total * amount;
-    console.log("New difference: " + newDiff);
     return newDiff;
   } else {
     return difference;
