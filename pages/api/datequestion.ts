@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const startDate = new Date("January 3, 2023");
+const startDate = new Date("2023-01-02T14:00:00.000Z");
 const currentDate = new Date();
 const difference = getNumberOfDays(startDate, currentDate);
 
@@ -37,18 +37,6 @@ type Data = {
   answer: string;
   id: string;
   day: string;
-};
-
-type Question = {
-  _createdAt: String;
-  _id: String;
-  _rev: String;
-  _type: String;
-  _updatedAt: String;
-  answer: String;
-  hint: String;
-  initials: String;
-  used: boolean;
 };
 
 const fetchQuestions = async (): Promise<any> => {
