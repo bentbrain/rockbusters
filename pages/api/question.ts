@@ -8,6 +8,7 @@ type Data = {
   initials: string;
   answer: string;
   id: string;
+  day: string;
 };
 
 type Question = {
@@ -111,9 +112,14 @@ export default async function handler(
   const questionData = fetchQuestion();
   const question = await questionData;
   res.status(200).json({
-    hint: question.hint,
-    initials: question.initials,
-    answer: question.answer,
-    id: question._id,
+    // hint: question.hint,
+    // initials: question.initials,
+    // answer: question.answer,
+    // id: question._id,
+    hint: "test",
+    initials: "test",
+    answer: "test",
+    id: "test",
+    day: "test",
   });
 }
