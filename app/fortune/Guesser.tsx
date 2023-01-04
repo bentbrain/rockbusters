@@ -185,14 +185,14 @@ https://rockbusters.vercel.app/fortune`;
 
   return (
     <div>
-      <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto  justify-center mb-4">
+      <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto text-xs md:text-sm  justify-center mb-4">
         {clueInitials.includes(" ")
           ? clueInitials
               .join("")
               .split(" ")
               .map((a, i) => {
                 return (
-                  <div className="flex mx-1  gap-1">
+                  <div className="flex mx-1   gap-1">
                     {a.split("").map((b, index) => {
                       return b == "§" ? (
                         <span
