@@ -40,17 +40,21 @@ function Guesser({ hint, initials, answer, id, day }: Props) {
   ) => {
     e.currentTarget.innerText = "Copied";
 
-    const answerPosition = guesses.indexOf(decryptData(answer));
-    let resultString = [];
+    const answerPosition = guesses.indexOf(decryptData(answer).toLowerCase());
+    let resultString: string[] = [];
 
     if (answerPosition < 0)
       return `Rockbusters #${day}
 
-🙈 ⬜️ ⬜️ ⬜️
+🙈 🟥 🟥 🟥 🟥 🟥
 https://rockbusters.vercel.app/`;
 
     for (var i = 0; i < maxGuesses; i++) {
-      i == answerPosition ? resultString.push("🟩") : resultString.push("⬜️");
+      if (resultString.includes("🟩")) {
+        resultString.push("⬜️");
+      } else {
+        i == answerPosition ? resultString.push("🟩") : resultString.push("🟥");
+      }
     }
     return `Rockbusters #${day}
 
@@ -224,6 +228,21 @@ https://rockbusters.vercel.app/`;
                 </span>
               );
             })}
+      </div>
+      <div className="guesses gap-2 my-2 flex flex-col">
+        {guesses.map((a) => {
+          return (
+            <div
+              className={`guess ${
+                a == decryptData(answer).toLowerCase()
+                  ? "bg-green-100"
+                  : "bg-red-100"
+              } rounded capitalize p-1 `}
+            >
+              {a}
+            </div>
+          );
+        })}
       </div>
       {playable ? (
         <form
