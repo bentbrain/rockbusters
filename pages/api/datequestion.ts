@@ -37,6 +37,8 @@ type Data = {
   answer: string;
   id: string;
   day: string;
+  start: string;
+  date: string;
 };
 
 const fetchQuestions = async (): Promise<any> => {
@@ -59,6 +61,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const questionData = await fetchQuestions();
+
   const question = questionData[calcDifference(questionData)];
   res.status(200).json({
     hint: question.hint,
@@ -66,5 +69,7 @@ export default async function handler(
     answer: question.answer,
     id: question._id,
     day: difference.toString(),
+    start: `${startDate.toDateString()} ${startDate.toTimeString()}`,
+    date: `${currentDate.toDateString()} ${currentDate.toTimeString()}`,
   });
 }
