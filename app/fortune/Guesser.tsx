@@ -239,7 +239,7 @@ https://rockbusters.vercel.app/fortune`;
                   : "bg-red-100"
               } rounded capitalize p-1 `}
             >
-              {a}
+              {a ? a : "–"}
             </div>
           );
         })}
@@ -255,11 +255,8 @@ https://rockbusters.vercel.app/fortune`;
             onChange={(e) => setSelection(e.currentTarget.value)}
             className="border-2 border-stone-200 rounded col-span-3"
           />
-          <button
-            disabled={selection ? false : true}
-            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded "
-          >
-            Submit
+          <button className="bg-blue-500 uppercase text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded ">
+            {selection ? "submit" : "skip"}
           </button>
         </form>
       ) : correct ? (
