@@ -18,7 +18,7 @@ async function getData() {
 
 export default async function Head() {
   const question = await getData();
-  const titleString = `#${question.day} ${question.hint}`;
+  const titleString = `#${question.day}: ${question.hint}`;
 
   return (
     <>

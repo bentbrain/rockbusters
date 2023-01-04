@@ -31,22 +31,20 @@ export default async function handler(req: NextRequest) {
 
     return new ImageResponse(
       (
-        <div tw="flex p-4 text-center h-full w-full ">
-          <div tw="flex flex-col bg-white shadow-md rounded-md w-full h-full py-4 px-8">
-            <div tw="flex flex-col justify-center w-full items-center">
-              <img tw="h-50 " src={`${fetchURL}karl.png`} alt="" />
-              <h1 tw="text-8xl font-bold">Rockbusters</h1>
-            </div>
-            <div tw="flex w-full my-auto justify-center">
-              <h1
-                style={{
-                  fontFamily: "Medium",
-                }}
-                tw="text-5xl font-bold"
-              >
-                {title}
-              </h1>
-            </div>
+        <div tw="flex flex-col bg-white  w-full h-full py-4 px-8">
+          <div tw="flex flex-col justify-center w-full items-center">
+            <img tw="h-50 " src={`${fetchURL}karl.png`} alt="" />
+            <h1 tw="text-8xl font-bold">Rockbusters</h1>
+          </div>
+          <div tw="flex w-full my-auto justify-center">
+            <h1
+              style={{
+                fontFamily: "Medium",
+              }}
+              tw="text-5xl font-bold"
+            >
+              {title}
+            </h1>
           </div>
         </div>
       ),
