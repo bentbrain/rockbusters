@@ -154,8 +154,10 @@ https://rockbusters.vercel.app/fortune`;
 
     setClueInitials(newClues);
 
-    setGuesses((guesses) => [...guesses, selection.toLowerCase()]);
-    if (selection.toLowerCase() == decryptData(answer).toLowerCase()) {
+    setGuesses((guesses) => [...guesses, selection.toLowerCase().trim()]);
+    if (
+      selection.toLowerCase().trim() == decryptData(answer).toLowerCase().trim()
+    ) {
       setCorrect(true);
       setPlayable(false);
       setClueInitials([...allInitials]);
