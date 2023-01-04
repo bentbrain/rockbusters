@@ -24,11 +24,15 @@ function getNumberOfDays(start: Date, end: Date) {
 
   // Calculating the time difference between two dates
   const diffInTime = date2.getTime() - date1.getTime();
+  const altDiff = Math.ceil(
+    Math.abs(date1.getTime() - date2.getTime()) / 36e5 / 24
+  );
+  console.log(altDiff / 24);
 
   // Calculating the no. of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
 
-  return diffInDays;
+  return altDiff;
 }
 
 type Data = {

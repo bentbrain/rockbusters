@@ -77,7 +77,7 @@ https://rockbusters.vercel.app/fortune`;
         tempInitials.push(" ");
         capitalNext = true;
       } else {
-        tempInitials.push("&");
+        tempInitials.push("§");
         capitalNext = false;
       }
     }
@@ -147,7 +147,9 @@ https://rockbusters.vercel.app/fortune`;
         newClues.splice(randomInt, 1, letter);
         lettersLeft.splice(randomInt, 1, "");
         i++;
+        continue;
       }
+      i++;
     }
 
     setClueInitials(newClues);
@@ -192,7 +194,7 @@ https://rockbusters.vercel.app/fortune`;
                 return (
                   <div className="flex mx-1  gap-1">
                     {a.split("").map((b, index) => {
-                      return b == "&" ? (
+                      return b == "§" ? (
                         <span
                           key={`initial${index}`}
                           className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
@@ -212,7 +214,7 @@ https://rockbusters.vercel.app/fortune`;
                 );
               })
           : clueInitials.map((a, i) => {
-              return a == "&" ? (
+              return a == "§" ? (
                 <span
                   key={`initial${i}`}
                   className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
