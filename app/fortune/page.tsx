@@ -42,7 +42,7 @@ async function tempGetData() {
 }
 
 async function Home() {
-  const question = await tempGetData();
+  const question = await getData();
 
   return (
     <div className="text-center">
