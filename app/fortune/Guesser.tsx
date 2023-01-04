@@ -47,7 +47,7 @@ function Guesser({ hint, initials, answer, id, day }: Props) {
       return `Rockbusters #${day}
 
 🙈 🟥 🟥 🟥 🟥 🟥
-https://rockbusters.vercel.app/`;
+https://rockbusters.vercel.app/fortune`;
 
     for (var i = 0; i < maxGuesses; i++) {
       if (resultString.includes("🟩")) {
@@ -59,7 +59,7 @@ https://rockbusters.vercel.app/`;
     return `Rockbusters #${day}
 
 🙊 ${resultString.join(" ")}
-https://rockbusters.vercel.app/`;
+https://rockbusters.vercel.app/fortune`;
   };
 
   useEffect(() => {
