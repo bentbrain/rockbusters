@@ -179,26 +179,26 @@ https://rockbusters.vercel.app/`;
 
   return (
     <div>
-      <div className="letters flex gap-3 flex-wrap max-w-[min(400px,100%)] mx-auto  justify-center mb-4">
+      <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto  justify-center mb-4">
         {clueInitials.includes(" ")
           ? clueInitials
               .join("")
               .split(" ")
               .map((a, i) => {
                 return (
-                  <div className="flex gap-1">
+                  <div className="flex mx-1  gap-1">
                     {a.split("").map((b, index) => {
                       return b == "&" ? (
                         <span
                           key={`initial${index}`}
-                          className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
                         >
                           &nbsp;
                         </span>
                       ) : (
                         <span
                           key={`initial${index}`}
-                          className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
                         >
                           {b}
                         </span>

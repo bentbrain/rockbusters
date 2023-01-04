@@ -35,14 +35,14 @@ async function tempGetData() {
   return {
     hint: "temporary",
     initials: "N.S!",
-    answer: "short answer",
+    answer: "the really",
     id: "1220",
     day: "4",
   };
 }
 
 async function Home() {
-  const question = await getData();
+  const question = await tempGetData();
 
   return (
     <div className="text-center">
