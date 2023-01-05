@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const startDate = new Date("2022-12-20T14:00:00.000Z");
+const startDate = new Date("2023-01-02T14:00:00.000Z");
 const currentDate = new Date();
 const difference = getNumberOfDays(startDate, currentDate);
 
@@ -47,7 +47,7 @@ type Data = {
 
 const fetchQuestions = async (): Promise<any> => {
   const res = await fetch(
-    "https://qqo9n2ek.api.sanity.io/v2021-06-07/data/query/production?query=*%5B_type%20%3D%3D%20%22question%22%20%5D%20%20%7C%20order%28hint%20asc%29"
+    "https://qqo9n2ek.api.sanity.io/v2021-06-07/data/query/production?query=*%5B_type%20%3D%3D%20%22question%22%20%5D%20%20%7C%20order%28_createdAt%20asc%29"
   );
 
   if (!res.ok) {
