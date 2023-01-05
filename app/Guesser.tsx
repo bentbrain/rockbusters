@@ -2,9 +2,7 @@
 
 import React, { FormEvent, useState, useEffect } from "react";
 import Artists from "./artists";
-import Select from "react-select";
 import CryptoJS from "crypto-js";
-import { resourceUsage } from "process";
 
 type Props = {
   hint: string;
@@ -19,7 +17,6 @@ const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 const decryptData = (text: string) => {
   const bytes = CryptoJS.AES.decrypt(text, cryptKey ? cryptKey : "cryptKey");
   const data = bytes.toString(CryptoJS.enc.Utf8);
-
   return data;
 };
 
@@ -27,35 +24,64 @@ function Guesser({ hint, initials, answer, id, day }: Props) {
   const [playable, setPlayable] = useState(true);
   const [correct, setCorrect] = useState(false);
   const [selection, setSelection] = useState("");
+  const [clueInitials, setClueInitials] = useState<String[]>([]);
   const [guesses, setGuesses] = useState<String[]>([]);
+  const allInitials = decryptData(answer).split("");
   const artists = Artists();
+
+  const maxGuesses = allInitials.length < 5 ? allInitials.length : 5;
 
   const makeResultsString = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.currentTarget.innerText = "Copied";
-    const guessCount = 3;
-    const answerPosition = guesses.indexOf(decryptData(answer));
-    let resultString = [];
+    const answerPosition = guesses.indexOf(decryptData(answer).toLowerCase());
+    let resultString: string[] = [];
 
     if (answerPosition < 0)
       return `Rockbusters #${day}
+    
+    🙈 🟥 🟥 🟥 🟥 🟥
+    https://rockbusters.vercel.app/`;
 
-🙈 ⬜️ ⬜️ ⬜️
-https://rockbusters.vercel.app/`;
-
-    for (var i = 0; i < guessCount; i++) {
-      i == answerPosition ? resultString.push("🟩") : resultString.push("⬜️");
+    for (var i = 0; i < maxGuesses; i++) {
+      if (resultString.includes("🟩")) {
+        resultString.push("⬜️");
+      } else {
+        i == answerPosition ? resultString.push("🟩") : resultString.push("🟥");
+      }
     }
     return `Rockbusters #${day}
-
+    
 🙊 ${resultString.join(" ")}
 https://rockbusters.vercel.app/`;
   };
 
   useEffect(() => {
-    const gameData = window.localStorage.getItem("rockbusters_game");
-    const currentAnswer = window.localStorage.getItem("current_answer");
+    const initials = [...allInitials];
+    let tempInitials = [];
+    let capitalNext = false;
+    for (let i = 0; i < initials.length; i++) {
+      if (capitalNext) {
+        tempInitials.push(initials[i]);
+        capitalNext = false;
+      } else if (i == 0) {
+        tempInitials.push(initials[i]);
+        capitalNext = false;
+      } else if (initials[i] == " ") {
+        tempInitials.push(" ");
+        capitalNext = true;
+      } else {
+        tempInitials.push("§");
+        capitalNext = false;
+      }
+    }
+    setClueInitials(tempInitials);
+  }, []);
+
+  useEffect(() => {
+    const gameData = window.localStorage.getItem("rockbusters_game_fortune");
+    const currentAnswer = window.localStorage.getItem("current_answer_fortune");
     if (
       gameData != null &&
       currentAnswer != null &&
@@ -63,13 +89,14 @@ https://rockbusters.vercel.app/`;
       JSON.parse(currentAnswer ? currentAnswer : "else") == id
     ) {
       const sessionGuesses = JSON.parse(gameData);
-      if (sessionGuesses.guesses.length >= 3) {
+      if (sessionGuesses.guesses.length >= maxGuesses) {
         setPlayable(false);
       }
       setGuesses(sessionGuesses.guesses);
-      if (sessionGuesses.guesses.includes(decryptData(answer))) {
+      if (sessionGuesses.guesses.includes(decryptData(answer).toLowerCase())) {
         setCorrect(true);
         setPlayable(false);
+        setClueInitials([...allInitials]);
       }
     }
   }, []);
@@ -77,7 +104,7 @@ https://rockbusters.vercel.app/`;
   useEffect(() => {
     guesses.length >= 1 &&
       window.localStorage.setItem(
-        "rockbusters_game",
+        "rockbusters_game_fortune",
         JSON.stringify({ guesses: guesses })
       );
   }, [guesses]);
@@ -85,21 +112,82 @@ https://rockbusters.vercel.app/`;
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    window.localStorage.setItem("current_answer", JSON.stringify(id));
+    window.localStorage.setItem("current_answer_fortune", JSON.stringify(id));
 
-    setGuesses((guesses) => [...guesses, selection]);
-    if (selection == decryptData(answer)) {
+    const allLetters = [...allInitials];
+    const spaces = allLetters.filter((x) => x === " ").length;
+    const currentLetters = [...clueInitials];
+    const lettersToReveal = (allInitials.length - 1 - spaces * 2) / maxGuesses;
+    let lettersLeft = [];
+
+    for (let i = 0; i < allInitials.length; i++) {
+      if (currentLetters[i] == allInitials[i]) {
+        lettersLeft.push("");
+      } else {
+        lettersLeft.push(allInitials[i]);
+      }
+    }
+
+    let newClues = [...clueInitials];
+
+    for (let i = 0; i < Math.floor(lettersToReveal); ) {
+      let randomInt = randomIntFromInterval(0, lettersLeft.length - 1);
+      let letter = lettersLeft[randomInt];
+      if (letter == "" || letter == " ") {
+        continue;
+      } else {
+        newClues.splice(randomInt, 1, letter);
+        lettersLeft.splice(randomInt, 1, "");
+        i++;
+        continue;
+      }
+      i++;
+    }
+
+    setClueInitials(newClues);
+
+    console.log(
+      selection
+        .toLowerCase()
+        .trim()
+        .replaceAll(/[^\w\s]/g, "")
+    );
+
+    console.log(
+      decryptData(answer)
+        .toLowerCase()
+        .trim()
+        .replaceAll(/[^\w\s]/g, "")
+    );
+
+    setGuesses((guesses) => [...guesses, selection.toLowerCase().trim()]);
+    if (
+      selection
+        .toLowerCase()
+        .trim()
+        .replaceAll(/[^\w\s]/g, "") ==
+      decryptData(answer)
+        .toLowerCase()
+        .trim()
+        .replaceAll(/[^\w\s]/g, "")
+    ) {
       setCorrect(true);
       setPlayable(false);
+      setClueInitials([...allInitials]);
     } else {
-      console.log("changed");
       setCorrect(false);
     }
-    if (guesses.length == 2) {
+    if (guesses.length == maxGuesses - 1) {
       setPlayable(false);
+      setClueInitials([...allInitials]);
     }
     setSelection("");
   };
+
+  function randomIntFromInterval(min: number, max: number) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
   const options = artists
     .filter((a) => !guesses.includes(a))
@@ -112,40 +200,70 @@ https://rockbusters.vercel.app/`;
 
   return (
     <div>
-      <div className="guesses flex flex-col gap-2  [&>*]:p-2 my-4 [&>*]:rounded-md text-center">
-        <div
-          className={`guess ${
-            guesses[0]
-              ? guesses[0] == decryptData(answer)
-                ? "bg-green-100"
-                : "bg-red-100"
-              : "bg-slate-100"
-          }`}
-        >
-          <p>{guesses[0]} &nbsp;</p>
-        </div>
-        <div
-          className={`guess ${
-            guesses[1]
-              ? guesses[1] == decryptData(answer)
-                ? "bg-green-100"
-                : "bg-red-100"
-              : "bg-slate-100"
-          }`}
-        >
-          <p>{guesses[1]} &nbsp;</p>
-        </div>
-        <div
-          className={`guess ${
-            guesses[2]
-              ? guesses[2] == decryptData(answer)
-                ? "bg-green-100"
-                : "bg-red-100"
-              : "bg-slate-100"
-          }`}
-        >
-          <p>{guesses[2]} &nbsp;</p>
-        </div>
+      <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto text-xs md:text-sm  justify-center mb-4">
+        {clueInitials.includes(" ")
+          ? clueInitials
+              .join("")
+              .split(" ")
+              .map((a, i) => {
+                return (
+                  <div key={`word: ${i}`} className="flex mx-1   gap-1">
+                    {a.split("").map((b, index) => {
+                      return b == "§" ? (
+                        <span
+                          key={`initial${index}`}
+                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
+                        >
+                          &nbsp;
+                        </span>
+                      ) : (
+                        <span
+                          key={`initial${index}`}
+                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
+                        >
+                          {b}
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })
+          : clueInitials.map((a, i) => {
+              return a == "§" ? (
+                <span
+                  key={`initial${i}-thing`}
+                  className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                >
+                  &nbsp;
+                </span>
+              ) : (
+                <span
+                  key={`initial${i}-thing`}
+                  className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                >
+                  {a}
+                </span>
+              );
+            })}
+      </div>
+      <div className="guesses gap-2 my-2 flex flex-col">
+        {guesses.map((a, i) => {
+          return (
+            <div
+              key={`guess ${i}`}
+              className={`guess ${
+                a.replaceAll(/[^\w\s]/g, "") ==
+                decryptData(answer)
+                  .toLowerCase()
+                  .replaceAll(/[^\w\s]/g, "")
+                  ? "bg-green-100"
+                  : "bg-red-100"
+              } rounded capitalize p-1 `}
+            >
+              {a ? a : "–"}
+            </div>
+          );
+        })}
       </div>
       {playable ? (
         <form
@@ -153,17 +271,13 @@ https://rockbusters.vercel.app/`;
           onSubmit={(e) => handleSubmit(e)}
           action=""
         >
-          <Select
-            id="selector"
-            className="col-span-3"
-            onChange={(value) => setSelection(value ? value.value : selection)}
-            options={options}
+          <input
+            type="text"
+            onChange={(e) => setSelection(e.currentTarget.value)}
+            className="border-2 border-stone-200 rounded col-span-3"
           />
-          <button
-            disabled={selection ? false : true}
-            className="bg-blue-500 text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded "
-          >
-            Submit
+          <button className="bg-blue-500 uppercase text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded ">
+            {selection ? "submit" : "skip"}
           </button>
         </form>
       ) : correct ? (

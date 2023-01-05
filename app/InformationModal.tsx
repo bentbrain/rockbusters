@@ -46,7 +46,12 @@ function InformationModal({ isOpen, setOpen }: Props) {
         <strong>exploding pet, A.K – Atomic Kitten</strong>. Yeah, that's how it
         works.
       </p>
-      <p className="font-medium">1 clue per day, 3 guesses.</p>
+      <p className="font-medium">1 clue per day, 5 guesses.</p>
+      <p>After each failed guess, more letters will be revealed.</p>
+      <p>
+        These questions were written by the genius,{" "}
+        <a href="https://www.facebook.com/KarlPilkington/">Karl Pilkington</a>.
+      </p>
     </dialog>
   );
 }

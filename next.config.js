@@ -3,6 +3,16 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-}
 
-module.exports = nextConfig
+  async redirects() {
+    return [
+      {
+        source: "/fortune",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;

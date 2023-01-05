@@ -1,5 +1,6 @@
 import "./globals.css";
 import Header from "./Header";
+import Countdown from "./Countdown";
 
 export default function RootLayout({
   children,
@@ -15,10 +16,11 @@ export default function RootLayout({
       <head />
       <body className=" flex flex-col justify-start">
         <Header />
-        <div className="wrapper p-4 grid items-center my-auto">
-          <main className="max-w-[min(600px,100%)] my-6 bg-white p-4 rounded-md mx-auto shadow">
+        <div className="wrapper p-4 grid items-center my-auto text-center">
+          <main className="w-[min(600px,100%)] my-6 bg-white p-4 rounded-md mx-auto shadow">
             {children}
           </main>
+          <Countdown />
         </div>
       </body>
     </html>

@@ -1,5 +1,4 @@
 import React from "react";
-import sanityClient from "./client.js";
 import Guesser from "./Guesser";
 import CryptoJS from "crypto-js";
 
@@ -35,8 +34,9 @@ async function tempGetData() {
   return {
     hint: "temporary",
     initials: "N.S!",
-    answer: "NSYNC",
+    answer: "cher",
     id: "1220",
+    day: "4",
   };
 }
 
@@ -48,19 +48,6 @@ async function Home() {
       <h1 className="text-2xl font-bold mb-2">
         #{question.day}: {question.hint}
       </h1>
-      <h2 className="text-xl mb-1">
-        <span className="font-medium">Initials: </span>
-        {question.initials.includes("!") ? (
-          <dfn
-            title="Remember, Karl is a moron – this could be wrong"
-            className="underline decoration-dotted"
-          >
-            {question.initials.replace("!", "")}
-          </dfn>
-        ) : (
-          question.initials
-        )}
-      </h2>
       <Guesser
         id={question.id}
         hint={question.hint}
