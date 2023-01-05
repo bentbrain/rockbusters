@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const startDate = new Date("2023-01-02T14:00:00.000Z");
+const startDate = new Date("2022-12-20T14:00:00.000Z");
 const currentDate = new Date();
 const difference = getNumberOfDays(startDate, currentDate);
 
