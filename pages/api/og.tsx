@@ -32,7 +32,7 @@ export default async function handler(req: NextRequest) {
     return new ImageResponse(
       (
         <div tw="flex flex-col bg-white  w-full h-full py-4 px-8">
-          <div tw="flex flex-col justify-center w-full items-center">
+          <div tw="flex flex-col mt-auto justify-center w-full items-center">
             <img tw="h-50 " src={`${fetchURL}karl.png`} alt="" />
             <h1 tw="text-8xl font-bold">Rockbusters</h1>
           </div>
