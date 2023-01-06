@@ -1,6 +1,7 @@
 import "./globals.css";
-import Header from "./Header";
-import Countdown from "./Countdown";
+import Header from "./components/Header";
+import Countdown from "./components/Countdown";
+import { AnalyticsWrapper } from "./components/analytics";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,7 @@ export default function RootLayout({
           </main>
           <Countdown />
         </div>
+        <AnalyticsWrapper />
       </body>
     </html>
   );

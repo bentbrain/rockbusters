@@ -1,7 +1,6 @@
 "use client";
 
 import React, { FormEvent, useState, useEffect } from "react";
-import Artists from "./artists";
 import CryptoJS from "crypto-js";
 
 type Props = {
@@ -27,7 +26,6 @@ function Guesser({ hint, initials, answer, id, day }: Props) {
   const [clueInitials, setClueInitials] = useState<String[]>([]);
   const [guesses, setGuesses] = useState<String[]>([]);
   const allInitials = decryptData(answer).split("");
-  const artists = Artists();
 
   const maxGuesses = allInitials.length < 5 ? allInitials.length : 5;
 
@@ -91,6 +89,7 @@ https://rockbusters.lol/`;
       const sessionGuesses = JSON.parse(gameData);
       if (sessionGuesses.guesses.length >= maxGuesses) {
         setPlayable(false);
+        setClueInitials([...allInitials]);
       }
       setGuesses(sessionGuesses.guesses);
       if (sessionGuesses.guesses.includes(decryptData(answer).toLowerCase())) {
@@ -117,7 +116,10 @@ https://rockbusters.lol/`;
     const allLetters = [...allInitials];
     const spaces = allLetters.filter((x) => x === " ").length;
     const currentLetters = [...clueInitials];
-    const lettersToReveal = (allInitials.length - 1 - spaces * 2) / maxGuesses;
+    const lettersToReveal =
+      guesses.length + 1 == allLetters.length - 1
+        ? 0
+        : (allInitials.length - spaces * 2) / maxGuesses;
     let lettersLeft = [];
 
     for (let i = 0; i < allInitials.length; i++) {
@@ -145,20 +147,6 @@ https://rockbusters.lol/`;
     }
 
     setClueInitials(newClues);
-
-    console.log(
-      selection
-        .toLowerCase()
-        .trim()
-        .replaceAll(/[^\w\s]/g, "")
-    );
-
-    console.log(
-      decryptData(answer)
-        .toLowerCase()
-        .trim()
-        .replaceAll(/[^\w\s]/g, "")
-    );
 
     setGuesses((guesses) => [...guesses, selection.toLowerCase().trim()]);
     if (
@@ -188,15 +176,6 @@ https://rockbusters.lol/`;
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-
-  const options = artists
-    .filter((a) => !guesses.includes(a))
-    .map((a, i) => {
-      return {
-        value: a,
-        label: a,
-      };
-    });
 
   return (
     <div>
