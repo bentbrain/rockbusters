@@ -27,8 +27,6 @@ function getNumberOfDays(start: Date, end: Date) {
   const altDiff = Math.ceil(
     Math.abs(date1.getTime() - date2.getTime()) / 36e5 / 24
   );
-  console.log(altDiff / 24);
-
   // Calculating the no. of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
 

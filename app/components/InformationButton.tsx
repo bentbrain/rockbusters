@@ -1,5 +1,4 @@
 "use client";
-import InformationModal from "./InformationModal";
 import {
   IoInformationCircleOutline,
   IoCloseCircleOutline,

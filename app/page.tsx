@@ -50,8 +50,6 @@ async function Home() {
       </h1>
       <Guesser
         id={question.id}
-        hint={question.hint}
-        initials={question.initials}
         day={question.day}
         answer={encryptData(question.answer)}
       />

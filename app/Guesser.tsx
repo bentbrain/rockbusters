@@ -1,59 +1,26 @@
 "use client";
 
 import React, { FormEvent, useState, useEffect } from "react";
-import CryptoJS from "crypto-js";
+import { decryptData } from "./utils/crypt";
+import { makeResultsString } from "./utils/clipboard";
+import { SetStats } from "./utils/stats";
 
 type Props = {
-  hint: string;
-  initials: string;
   answer: string;
   id: string;
   day: string;
 };
 
-const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
-
-const decryptData = (text: string) => {
-  const bytes = CryptoJS.AES.decrypt(text, cryptKey ? cryptKey : "cryptKey");
-  const data = bytes.toString(CryptoJS.enc.Utf8);
-  return data;
-};
-
-function Guesser({ hint, initials, answer, id, day }: Props) {
+function Guesser({ answer, id, day }: Props) {
   const [playable, setPlayable] = useState(true);
   const [correct, setCorrect] = useState(false);
   const [selection, setSelection] = useState("");
-  const [clueInitials, setClueInitials] = useState<String[]>([]);
-  const [guesses, setGuesses] = useState<String[]>([]);
-  const allInitials = decryptData(answer).split("");
+  const [clueInitials, setClueInitials] = useState<string[]>([]);
+  const [guesses, setGuesses] = useState<string[]>([]);
+  const answerString = decryptData(answer).toLowerCase();
+  const allInitials = answerString.split("");
 
   const maxGuesses = allInitials.length < 5 ? allInitials.length : 5;
-
-  const makeResultsString = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.currentTarget.innerText = "Copied";
-    const answerPosition = guesses.indexOf(decryptData(answer).toLowerCase());
-    let resultString: string[] = [];
-
-    if (answerPosition < 0)
-      return `Rockbusters #${day}
-    
-    🙈 🟥 🟥 🟥 🟥 🟥
-    https://rockbusters.lol/`;
-
-    for (var i = 0; i < maxGuesses; i++) {
-      if (resultString.includes("🟩")) {
-        resultString.push("⬜️");
-      } else {
-        i == answerPosition ? resultString.push("🟩") : resultString.push("🟥");
-      }
-    }
-    return `Rockbusters #${day}
-    
-🙊 ${resultString.join(" ")}
-https://rockbusters.lol/`;
-  };
 
   useEffect(() => {
     const initials = [...allInitials];
@@ -87,12 +54,15 @@ https://rockbusters.lol/`;
       JSON.parse(currentAnswer ? currentAnswer : "else") == id
     ) {
       const sessionGuesses = JSON.parse(gameData);
+
       if (sessionGuesses.guesses.length >= maxGuesses) {
         setPlayable(false);
         setClueInitials([...allInitials]);
       }
       setGuesses(sessionGuesses.guesses);
-      if (sessionGuesses.guesses.includes(decryptData(answer).toLowerCase())) {
+
+      // If the answer was guessed in > the max guesses
+      if (sessionGuesses.guesses.includes(answerString)) {
         setCorrect(true);
         setPlayable(false);
         setClueInitials([...allInitials]);
@@ -154,19 +124,18 @@ https://rockbusters.lol/`;
         .toLowerCase()
         .trim()
         .replaceAll(/[^\w\s]/g, "") ==
-      decryptData(answer)
-        .toLowerCase()
-        .trim()
-        .replaceAll(/[^\w\s]/g, "")
+      answerString.trim().replaceAll(/[^\w\s]/g, "")
     ) {
       setCorrect(true);
       setPlayable(false);
       setClueInitials([...allInitials]);
+      SetStats(true, guesses.length + 1);
     } else {
       setCorrect(false);
     }
     if (guesses.length == maxGuesses - 1) {
       setPlayable(false);
+      SetStats(false, 0);
       setClueInitials([...allInitials]);
     }
     setSelection("");
@@ -232,9 +201,7 @@ https://rockbusters.lol/`;
               key={`guess ${i}`}
               className={`guess ${
                 a.replaceAll(/[^\w\s]/g, "") ==
-                decryptData(answer)
-                  .toLowerCase()
-                  .replaceAll(/[^\w\s]/g, "")
+                answerString.replaceAll(/[^\w\s]/g, "")
                   ? "bg-green-100"
                   : "bg-red-100"
               } rounded capitalize p-1 `}
@@ -267,7 +234,9 @@ https://rockbusters.lol/`;
           <button
             className="bg-green-800 text-white b-2 w-min px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
-              navigator.clipboard.writeText(makeResultsString(e));
+              navigator.clipboard.writeText(
+                makeResultsString(e, guesses, answerString, maxGuesses, day)
+              );
             }}
           >
             Share
@@ -276,13 +245,15 @@ https://rockbusters.lol/`;
       ) : (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
           <span className="mx-auto text-center" id="fail">
-            Answer was <span className="font-bold">{decryptData(answer)}</span>.
-            Play a record.
+            Answer was <span className="font-bold">{answerString}</span>. Play a
+            record.
           </span>
           <button
             className="bg-green-800 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
-              navigator.clipboard.writeText(makeResultsString(e));
+              navigator.clipboard.writeText(
+                makeResultsString(e, guesses, answerString, maxGuesses, day)
+              );
             }}
           >
             Share
