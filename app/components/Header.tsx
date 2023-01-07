@@ -40,6 +40,8 @@ async function Header() {
         <div className="center md:-translate-x-5 flex gap-2 items-center md:mx-auto">
           <img
             className="w-10"
+            width={40}
+            height={40}
             src={
               question.hint.toLowerCase().includes("jamaican")
                 ? `/karl-jamaican.png`

@@ -17,7 +17,8 @@ function Guesser({ answer, id, day }: Props) {
   const [selection, setSelection] = useState("");
   const [clueInitials, setClueInitials] = useState<string[]>([]);
   const [guesses, setGuesses] = useState<string[]>([]);
-  const answerString = decryptData(answer).toLowerCase();
+  const originalAnswerString = decryptData(answer);
+  const answerString = originalAnswerString.toLowerCase();
   const allInitials = answerString.split("");
 
   const maxGuesses = allInitials.length < 5 ? allInitials.length : 5;
@@ -245,8 +246,8 @@ function Guesser({ answer, id, day }: Props) {
       ) : (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
           <span className="mx-auto text-center" id="fail">
-            Answer was <span className="font-bold">{answerString}</span>. Play a
-            record.
+            Answer was <span className="font-bold">{originalAnswerString}</span>
+            . Play a record.
           </span>
           <button
             className="bg-green-800 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded uppercase"
