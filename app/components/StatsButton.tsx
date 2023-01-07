@@ -65,7 +65,9 @@ function InformationButton() {
         onClick={() => openModal()}
       >
         <BsBarChart size={25} />
-        <span className="invisible h-0 w-0 absolute">Statistics</span>
+        <span className="invisible top-0 left-0 h-0 w-0 absolute">
+          Statistics
+        </span>
       </button>
       <dialog
         id="stats"
@@ -101,7 +103,9 @@ function InformationButton() {
                 <StatBar
                   key={a}
                   index={parseInt(a)}
-                  size={stats.guesses[a] * (100 / stats.played)}
+                  size={
+                    stats.played ? stats.guesses[a] * (100 / stats.played) : 0
+                  }
                   value={stats.guesses[a]}
                 />
               ) : null;

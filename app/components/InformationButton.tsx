@@ -36,7 +36,9 @@ function InformationButton() {
         onClick={() => openModal()}
       >
         <IoInformationCircleOutline size={30} />
-        <span className="invisible h-0 w-0 absolute">Information</span>
+        <span className="invisible h-0 w-0 top-0 left-0 absolute">
+          Information
+        </span>
       </button>
       <dialog
         id="information"
