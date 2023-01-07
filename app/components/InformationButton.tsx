@@ -30,7 +30,11 @@ function InformationButton() {
 
   return (
     <div className="flex items-center justify-center">
-      <button aria-label="information" onClick={() => openModal()}>
+      <button
+        aria-labelledby="information"
+        aria-label="Open Information"
+        onClick={() => openModal()}
+      >
         <IoInformationCircleOutline size={30} />
         <span className="invisible h-0 w-0 absolute">Information</span>
       </button>
