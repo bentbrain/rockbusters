@@ -94,6 +94,7 @@ function InformationButton() {
             {Object.keys(stats.guesses).map((a, i) => {
               return i != 0 ? (
                 <StatBar
+                  key={a}
                   index={parseInt(a)}
                   size={stats.guesses[a] * (100 / stats.played)}
                   value={stats.guesses[a]}
