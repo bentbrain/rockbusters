@@ -82,7 +82,9 @@ function InformationButton() {
         <div className="grid grid-cols-4 [&>*]:flex [&>*]:flex-col text-center mb-5  ">
           <Stat stat={stats.played} text="Played" />
           <Stat
-            stat={stats.played ? (100 * stats.wins) / stats.played : 0}
+            stat={
+              stats.played ? Math.round((100 * stats.wins) / stats.played) : 0
+            }
             text="Win %"
           />
           <Stat stat={stats.currentStreak} text="Current Streak" />
