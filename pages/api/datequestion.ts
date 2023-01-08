@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export const config = {
-  runtime: "edge",
-};
-
 const startDate = new Date("2023-01-02T14:00:00.000Z");
 const currentDate = new Date();
 const difference = getNumberOfDays(startDate, currentDate);
