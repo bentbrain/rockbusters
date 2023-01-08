@@ -34,7 +34,7 @@ export default async function Head() {
       />
       <link rel="icon" href="/karl.ico" />
       <link rel="manifest" href="/manifest.json" />
-      <meta name="theme-color" content="#292524" />
+      <meta name="theme-color" content="#FFFFFF" />
       <meta name="application-name" content="Rockbusters" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
