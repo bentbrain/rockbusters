@@ -3,8 +3,6 @@ import InformationButton from "./InformationButton";
 import StatsButton from "./StatsButton";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { BsBarChart } from "react-icons/bs";
-const headerText = `Uh, I give you like a cryptic clue and some initials and it sort of makes up a band. So an easy one that we did at the start was, uh, an exploding pet, A.K – Atomic Kitten. Yeah, that's how it works.`;
-
 const fetchURL = process.env.FETCH_URL;
 
 async function getData() {
