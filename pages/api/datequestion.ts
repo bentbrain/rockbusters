@@ -1,8 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export const config = {
-  runtime: "edge",
-};
+const token = process.env.SANITY_TOKEN;
+
+const sanityClient = require("@sanity/client");
+const client = sanityClient({
+  projectId: "qqo9n2ek",
+  dataset: "production",
+  apiVersion: "2023-01-08", // use current UTC date - see "specifying API version"!
+  token: token, // or leave blank for unauthenticated usage
+  useCdn: true, // `false` if you want to ensure fresh data
+});
 
 const startDate = new Date("2023-01-02T14:00:00.000Z");
 const currentDate = new Date();
@@ -47,26 +54,17 @@ type Data = {
   date: string;
 };
 
-const fetchQuestions = async (): Promise<any> => {
-  const res = await fetch(
-    "https://qqo9n2ek.api.sanity.io/v2021-06-07/data/query/production?query=*%5B_type%20%3D%3D%20%22question%22%20%5D%20%20%7C%20order%28_createdAt%20asc%29"
-  );
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  const questions = await res.json();
-
-  return questions.result;
+const query = '*[_type == "question" ]  | order(_createdAt asc)';
+const fetchQuestion = async () => {
+  const questions = await client.fetch(query);
+  return questions;
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const questionData = await fetchQuestions();
+  const questionData = await fetchQuestion();
 
   const question = questionData[calcDifference(questionData)];
   res.status(200).json({
