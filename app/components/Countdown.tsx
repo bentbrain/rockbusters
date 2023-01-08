@@ -40,7 +40,7 @@ function Countdown() {
 
   return (
     <div>
-      <div id="timer" className="text-stone-600 w-full">
+      <div id="timer" className="text-stone-400 w-full">
         <p>
           <span className="font-semibold">Next Rockbuster: </span>
           <span role="timer" id="hours">

@@ -59,15 +59,8 @@ function InformationButton() {
 
   return (
     <div className="flex items-center justify-center">
-      <button
-        aria-labelledby="stats"
-        aria-label="Open Statistics"
-        onClick={() => openModal()}
-      >
+      <button onClick={() => openModal()}>
         <BsBarChart size={25} />
-        <span className="invisible top-0 left-0 h-0 w-0 absolute">
-          Statistics
-        </span>
       </button>
       <dialog
         id="stats"
@@ -101,11 +94,8 @@ function InformationButton() {
             {Object.keys(stats.guesses).map((a, i) => {
               return i != 0 ? (
                 <StatBar
-                  key={a}
                   index={parseInt(a)}
-                  size={
-                    stats.played ? stats.guesses[a] * (100 / stats.played) : 0
-                  }
+                  size={stats.guesses[a] * (100 / stats.played)}
                   value={stats.guesses[a]}
                 />
               ) : null;

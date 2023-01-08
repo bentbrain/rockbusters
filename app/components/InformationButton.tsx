@@ -30,15 +30,8 @@ function InformationButton() {
 
   return (
     <div className="flex items-center justify-center">
-      <button
-        aria-labelledby="information"
-        aria-label="Open Information"
-        onClick={() => openModal()}
-      >
+      <button onClick={() => openModal()}>
         <IoInformationCircleOutline size={30} />
-        <span className="invisible h-0 w-0 top-0 left-0 absolute">
-          Information
-        </span>
       </button>
       <dialog
         id="information"
@@ -73,7 +66,7 @@ function InformationButton() {
             className="underline"
             href="https://www.facebook.com/KarlPilkington/"
           >
-            Karl&nbsp;Pilkington
+            Karl Pilkington
           </a>
           .
         </p>

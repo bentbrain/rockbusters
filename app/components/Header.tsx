@@ -3,6 +3,8 @@ import InformationButton from "./InformationButton";
 import StatsButton from "./StatsButton";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { BsBarChart } from "react-icons/bs";
+const headerText = `Uh, I give you like a cryptic clue and some initials and it sort of makes up a band. So an easy one that we did at the start was, uh, an exploding pet, A.K – Atomic Kitten. Yeah, that's how it works.`;
+
 const fetchURL = process.env.FETCH_URL;
 
 async function getData() {
@@ -26,8 +28,8 @@ async function Header() {
 
   return (
     <header className="bg-white p-4 shadow">
-      <div className="inner max-w-[min(1200px,100%)] mx-auto text-center flex justify-between  ">
-        <div className=" gap-2 hidden md:flex">
+      <div className="inner max-w-[min(1200px,100%)] mx-auto text-center flex ">
+        <div className="flex gap-2">
           <IoInformationCircleOutline
             className="invisible"
             opacity={0}
@@ -35,11 +37,9 @@ async function Header() {
           />
           <BsBarChart className="invisible" opacity={0} size={25} />
         </div>
-        <div className="center md:-translate-x-5 flex gap-2 items-center md:mx-auto">
+        <div className="center md:-translate-x-5 flex gap-2 items-center mx-auto">
           <img
             className="w-10"
-            width={40}
-            height={40}
             src={
               question.hint.toLowerCase().includes("jamaican")
                 ? `/karl-jamaican.png`
