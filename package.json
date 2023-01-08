@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^7.2.0",
     "@next/font": "13.1.1",
     "@sanity/client": "^3.4.1",
     "@types/crypto-js": "^4.1.1",
@@ -21,6 +22,7 @@
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "next": "13.1.1",
+    "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
