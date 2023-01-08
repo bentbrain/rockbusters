@@ -27,7 +27,7 @@ async function Header() {
   const question = await getData();
 
   return (
-    <header className="bg-white p-4 shadow">
+    <header className="bg-white dark:bg-stone-800 p-4 shadow">
       <div className="inner max-w-[min(1200px,100%)] mx-auto text-center flex justify-between ">
         <div className="hidden md:flex gap-2">
           <IoInformationCircleOutline
@@ -47,7 +47,9 @@ async function Header() {
             }
             alt="Karl Pilkington Head"
           />
-          <h2 className="font-black text-xl text-stone-800">Rockbusters</h2>
+          <h2 className="font-black text-xl dark:text-white text-stone-800">
+            Rockbusters
+          </h2>
         </div>
         <div className="buttons flex gap-2">
           <StatsButton />
