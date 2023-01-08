@@ -2,7 +2,7 @@
   "theme_color": "#292524",
   "background_color": "#f5f5f4",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/app",
   "start_url": "/",
   "name": "Rockbusters",
   "short_name": "Rockbusters",
