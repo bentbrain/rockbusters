@@ -95,7 +95,9 @@ function InformationButton() {
               return i != 0 ? (
                 <StatBar
                   index={parseInt(a)}
-                  size={stats.guesses[a] * (100 / stats.played)}
+                  size={
+                    stats.wins ? stats.guesses[a] * (100 / stats.played) : 0
+                  }
                   value={stats.guesses[a]}
                 />
               ) : null;
