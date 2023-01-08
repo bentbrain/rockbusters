@@ -28,8 +28,8 @@ async function Header() {
 
   return (
     <header className="bg-white p-4 shadow">
-      <div className="inner max-w-[min(1200px,100%)] mx-auto text-center flex ">
-        <div className="flex gap-2">
+      <div className="inner max-w-[min(1200px,100%)] mx-auto text-center flex justify-between ">
+        <div className="hidden md:flex gap-2">
           <IoInformationCircleOutline
             className="invisible"
             opacity={0}
@@ -37,7 +37,7 @@ async function Header() {
           />
           <BsBarChart className="invisible" opacity={0} size={25} />
         </div>
-        <div className="center md:-translate-x-5 flex gap-2 items-center mx-auto">
+        <div className="center md:-translate-x-5 flex gap-2 items-center">
           <img
             className="w-10"
             src={
