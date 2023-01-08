@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^7.2.0",
     "@next/font": "13.1.1",
     "@sanity/client": "^3.4.1",
     "@types/crypto-js": "^4.1.1",
