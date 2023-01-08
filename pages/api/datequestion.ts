@@ -19,16 +19,9 @@ function getNumberOfDays(start: Date, end: Date) {
   const date1 = new Date(start);
   const date2 = new Date(end);
 
-  // One day in milliseconds
-  const oneDay = 1000 * 60 * 60 * 24;
-
-  // Calculating the time difference between two dates
-  const diffInTime = date2.getTime() - date1.getTime();
   const altDiff = Math.ceil(
     Math.abs(date1.getTime() - date2.getTime()) / 36e5 / 24
   );
-  // Calculating the no. of days between two dates
-  const diffInDays = Math.round(diffInTime / oneDay);
 
   return altDiff;
 }
@@ -50,7 +43,7 @@ const fetchQuestions = async (): Promise<any> => {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch data you fool");
   }
 
   const questions = await res.json();
