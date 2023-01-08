@@ -9,7 +9,7 @@ function Stat({ stat, text }: Props) {
   return (
     <div>
       <p className="text-3xl mb-2 font-bold">{stat.toString()}</p>
-      <p className="text-xs text-stone-600">{text}</p>
+      <p className="text-xs text-stone-400">{text}</p>
     </div>
   );
 }

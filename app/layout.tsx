@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-stone-100">
+    <html lang="en" className="bg-stone-100 dark:bg-stone-900">
       {/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
@@ -19,7 +19,7 @@ export default function RootLayout({
         {/* @ts-ignore */}
         <Header />
         <div className="wrapper p-4 grid items-center my-auto text-center">
-          <main className="w-[min(600px,100%)] my-6 bg-white p-4 rounded-md mx-auto shadow">
+          <main className="w-[min(600px,100%)] my-6 bg-white dark:bg-stone-800 dark:text-white p-4 rounded-md mx-auto shadow">
             {children}
           </main>
           <Countdown />

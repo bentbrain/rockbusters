@@ -160,14 +160,14 @@ function Guesser({ answer, id, day }: Props) {
                       return b == "§" ? (
                         <span
                           key={`initial${index}`}
-                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
+                          className="uppercase  w-[2em] bg-stone-200 dark:bg-stone-900 rounded py-1 px-2"
                         >
                           &nbsp;
                         </span>
                       ) : (
                         <span
                           key={`initial${index}`}
-                          className="uppercase  w-[2em] bg-stone-200 rounded py-1 px-2"
+                          className="uppercase  w-[2em] bg-stone-200 dark:bg-stone-900 rounded py-1 px-2"
                         >
                           {b}
                         </span>
@@ -180,14 +180,14 @@ function Guesser({ answer, id, day }: Props) {
               return a == "§" ? (
                 <span
                   key={`initial${i}-thing`}
-                  className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                  className="uppercase w-[2em] bg-stone-200 dark:bg-stone-900 rounded py-1 px-2"
                 >
                   &nbsp;
                 </span>
               ) : (
                 <span
                   key={`initial${i}-thing`}
-                  className="uppercase w-[2em] bg-stone-200 rounded py-1 px-2"
+                  className="uppercase w-[2em] bg-stone-200 dark:bg-stone-900 rounded py-1 px-2"
                 >
                   {a}
                 </span>
@@ -202,8 +202,8 @@ function Guesser({ answer, id, day }: Props) {
               className={`guess ${
                 a.replaceAll(/[^\w\s]/g, "") ==
                 answerString.replaceAll(/[^\w\s]/g, "")
-                  ? "bg-green-100"
-                  : "bg-red-100"
+                  ? "bg-emerald-200 dark:bg-emerald-800"
+                  : "bg-rose-200 dark:bg-pink-800"
               } rounded capitalize p-1 `}
             >
               {a ? a : "–"}
@@ -220,7 +220,7 @@ function Guesser({ answer, id, day }: Props) {
           <input
             type="text"
             onChange={(e) => setSelection(e.currentTarget.value)}
-            className="border-2 border-stone-200 rounded col-span-3"
+            className="border-2 border-stone-200 rounded col-span-3 dark:text-stone-900"
           />
           <button className="bg-blue-500 uppercase text-white disabled:text-stone-500 disabled:bg-stone-200 b-2 w-full ml-auto p-2 leading-none font-bold rounded ">
             {selection ? "submit" : "skip"}
@@ -232,7 +232,7 @@ function Guesser({ answer, id, day }: Props) {
             Right, well done then 🍻
           </span>
           <button
-            className="bg-green-800 text-white b-2 w-min px-2 py-1 leading-none font-medium rounded uppercase"
+            className="bg-emerald-800 dark:bg-emerald-400 text-white dark:text-stone-700 b-2 w-min px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
               navigator.clipboard.writeText(
                 makeResultsString(e, guesses, answerString, maxGuesses, day)
@@ -249,7 +249,7 @@ function Guesser({ answer, id, day }: Props) {
             record.
           </span>
           <button
-            className="bg-green-800 text-white  b-2 w-min  px-2 py-1 leading-none font-medium rounded uppercase"
+            className="bg-emerald-800  dark:bg-emerald-400 text-white  dark:text-stone-700 b-2 w-min  px-2 py-1 leading-none font-medium rounded uppercase"
             onClick={(e) => {
               navigator.clipboard.writeText(
                 makeResultsString(e, guesses, answerString, maxGuesses, day)

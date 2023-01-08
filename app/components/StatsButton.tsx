@@ -58,18 +58,18 @@ function InformationButton() {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <button onClick={() => openModal()}>
+    <div className="flex items-center justify-center dark:text-white text-stone-800">
+      <button aria-labelledby="stats" onClick={() => openModal()}>
         <BsBarChart size={25} />
       </button>
       <dialog
         id="stats"
-        className=" backdrop:bg-stone-100/80 bg-white max-w-[min(55ch,calc(100%-2rem))] rounded-md shadow"
+        className=" backdrop:bg-stone-100/80 dark:backdrop:bg-stone-900/80 bg-white dark:bg-stone-800 dark:text-white text-stone-800 max-w-[min(55ch,calc(100%-2rem))] rounded-md shadow"
         onClick={(e) => backdropClose(e)}
       >
         <div className="flex justify-between gap-2 mb-3">
           <IoCloseCircleOutline opacity={0} size={30} />
-          <h3 className="font-black text-xl text-stone-800 ">Statistics</h3>
+          <h3 className="font-black text-xl ">Statistics</h3>
           <button
             onClick={() => {
               closeModal();
