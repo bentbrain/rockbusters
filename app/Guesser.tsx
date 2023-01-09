@@ -47,6 +47,16 @@ function Guesser({ answer, id, day }: Props) {
   useEffect(() => {
     const gameData = window.localStorage.getItem("rockbusters_game_fortune");
     const currentAnswer = window.localStorage.getItem("current_answer_fortune");
+    const initials = window.localStorage.getItem("rockbusters_initials");
+
+    if (
+      initials != null &&
+      JSON.parse(currentAnswer ? currentAnswer : "else") == id
+    ) {
+      const gameInitials = JSON.parse(initials);
+      setClueInitials(gameInitials.initials);
+    }
+
     if (
       gameData != null &&
       currentAnswer != null &&
@@ -69,6 +79,14 @@ function Guesser({ answer, id, day }: Props) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    guesses.length >= 1 &&
+      window.localStorage.setItem(
+        "rockbusters_initials",
+        JSON.stringify({ initials: clueInitials })
+      );
+  }, [guesses]);
 
   useEffect(() => {
     guesses.length >= 1 &&
