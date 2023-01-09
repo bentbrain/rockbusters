@@ -237,6 +237,7 @@ function Guesser({ answer, id, day }: Props) {
         >
           <input
             type="text"
+            placeholder="Type your guess here..."
             onChange={(e) => setSelection(e.currentTarget.value)}
             className="border-2 border-stone-200 rounded col-span-3 dark:text-stone-900"
           />
