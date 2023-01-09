@@ -41,6 +41,7 @@ export default async function Head() {
       <meta name="apple-mobile-web-app-title" content="Rockbusters" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
+      <link rel="apple-touch-icon" href="/icon-512x512.png"></link>
     </>
   );
 }

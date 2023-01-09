@@ -59,7 +59,11 @@ function InformationButton() {
 
   return (
     <div className="flex items-center justify-center dark:text-white text-stone-800">
-      <button aria-labelledby="stats" onClick={() => openModal()}>
+      <button
+        aria-labelledby="stats"
+        aria-label="Information Button"
+        onClick={() => openModal()}
+      >
         <BsBarChart size={25} />
       </button>
       <dialog
