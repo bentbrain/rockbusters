@@ -70,7 +70,7 @@ function InformationButton() {
             className="underline"
             href="https://www.facebook.com/KarlPilkington/"
           >
-            Karl Pilkington
+            Karl&nbsp;Pilkington
           </a>
           .
         </p>
