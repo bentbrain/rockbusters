@@ -8,7 +8,7 @@ const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
 
 async function getData() {
   const res = await fetch(`${fetchURL}api/datequestion`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 60 * 10 },
   });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
