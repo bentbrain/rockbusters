@@ -33,7 +33,7 @@ function getNumberOfDays(start: Date, end: Date) {
   return altDiff;
 }
 
-const query = `*[_type == "question" ]{order, _createdAt, hint, initials, answer, answer_audio{asset->{url}}, question_audio{asset->{url}}}  | order(order asc)`;
+const query = `*[_type == "question" ]{_id, order, _createdAt, hint, initials, answer, answer_audio{asset->{url}}, question_audio{asset->{url}}}  | order(order asc)`;
 
 type Data = {
   hint: string;
