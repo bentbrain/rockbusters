@@ -169,6 +169,9 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
 
   return (
     <div>
+      {question_audio && (
+        <AudioPlayer label="Question Audio" source={question_audio} />
+      )}
       <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto text-xs md:text-sm  justify-center mb-4">
         {clueInitials.includes(" ")
           ? clueInitials
@@ -215,7 +218,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
               );
             })}
       </div>
-      {question_audio && <AudioPlayer source={question_audio} />}
+
       <div className="guesses gap-2 my-2 flex flex-col">
         {guesses.map((a, i) => {
           return (
@@ -252,7 +255,9 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
         </form>
       ) : correct ? (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
-          {answer_audio && <AudioPlayer source={answer_audio} />}
+          {answer_audio && (
+            <AudioPlayer label="Answer Audio" source={answer_audio} />
+          )}
           <span className="col-span-4" id="correct">
             Right, well done then 🍻
           </span>
@@ -269,9 +274,12 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
         </div>
       ) : (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
-          {answer_audio && <AudioPlayer source={answer_audio} />}
+          {answer_audio && (
+            <AudioPlayer label="Answer Audio" source={answer_audio} />
+          )}
           <span className="mx-auto text-center" id="fail">
-            Answer was <span className="font-bold">{answerString}</span>. Play a
+            Answer was{" "}
+            <span className="font-bold capitalize">{answerString}</span>. Play a
             record.
           </span>
           <button
