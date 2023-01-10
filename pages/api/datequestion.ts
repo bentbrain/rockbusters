@@ -49,7 +49,9 @@ type Data = {
 
 const fetchQuestions = async (): Promise<any> => {
   const res = await fetch(
-    "https://qqo9n2ek.api.sanity.io/v2021-06-07/data/query/production?query=*%5B_type%20%3D%3D%20%22question%22%20%5D%20%20%7C%20order%28_createdAt%20asc%29"
+    `https://qqo9n2ek.api.sanity.io/v2021-06-07/data/query/production?query=${encodeURIComponent(
+      query
+    )}`
   );
 
   if (!res.ok) {
@@ -68,7 +70,7 @@ export default async function handler(
 ) {
   const questionData = await fetchQuestions();
 
-  const question = questionData[calcDifference(questionData) - 1];
+  const question = questionData[calcDifference(questionData)];
 
   console.log(question);
 
