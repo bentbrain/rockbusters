@@ -72,15 +72,17 @@ export default async function handler(
 
   const question = questionData[calcDifference(questionData)];
 
-  console.log(question);
-
   res.status(200).json({
     hint: question.hint,
     initials: question.initials,
     answer: question.answer,
     id: question._id,
-    answer_audio: question.answer_audio ? question.answer_audio : "false",
-    question_audio: question.question_audio ? question.question_audio : "false",
+    answer_audio: question.answer_audio
+      ? question.answer_audio.asset.url
+      : "false",
+    question_audio: question.question_audio
+      ? question.question_audio.asset.url
+      : "false",
     day: difference.toString(),
     start: `${startDate.toDateString()} ${startDate.toTimeString()}`,
     date: `${currentDate.toDateString()} ${currentDate.toTimeString()}`,
