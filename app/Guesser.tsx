@@ -4,14 +4,17 @@ import React, { FormEvent, useState, useEffect } from "react";
 import { decryptData } from "./utils/crypt";
 import { makeResultsString } from "./utils/clipboard";
 import { SetStats } from "./utils/stats";
+import AudioPlayer from "./components/AudioPlayer";
 
 type Props = {
   answer: string;
   id: string;
   day: string;
+  question_audio?: string;
+  answer_audio?: string;
 };
 
-function Guesser({ answer, id, day }: Props) {
+function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
   const [playable, setPlayable] = useState(true);
   const [correct, setCorrect] = useState(false);
   const [selection, setSelection] = useState("");
@@ -212,6 +215,7 @@ function Guesser({ answer, id, day }: Props) {
               );
             })}
       </div>
+      {question_audio && <AudioPlayer source={question_audio} />}
       <div className="guesses gap-2 my-2 flex flex-col">
         {guesses.map((a, i) => {
           return (
@@ -248,6 +252,7 @@ function Guesser({ answer, id, day }: Props) {
         </form>
       ) : correct ? (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
+          {answer_audio && <AudioPlayer source={answer_audio} />}
           <span className="col-span-4" id="correct">
             Right, well done then 🍻
           </span>
@@ -264,6 +269,7 @@ function Guesser({ answer, id, day }: Props) {
         </div>
       ) : (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
+          {answer_audio && <AudioPlayer source={answer_audio} />}
           <span className="mx-auto text-center" id="fail">
             Answer was <span className="font-bold">{answerString}</span>. Play a
             record.

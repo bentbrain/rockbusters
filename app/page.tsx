@@ -1,6 +1,7 @@
 import React from "react";
 import Guesser from "./Guesser";
 import CryptoJS from "crypto-js";
+import AudioPlayer from "./components/AudioPlayer";
 
 const fetchURL = process.env.FETCH_URL;
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
@@ -52,6 +53,8 @@ async function Home() {
         id={question.id}
         day={question.day}
         answer={encryptData(question.answer)}
+        question_audio={question.question_audio}
+        answer_audio={question.answer_audio}
       />
     </div>
   );
