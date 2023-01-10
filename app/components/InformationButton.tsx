@@ -65,7 +65,9 @@ function InformationButton() {
           <p>After each failed guess, more letters will be revealed.</p>
         </div>
         <p className="text-sm text-stone-400">
-          These questions were written by the genius,{" "}
+          <span className="font-bold">Hint:</span> it helps to read the clues
+          and potential answers in a very slow Manchester accent. These
+          questions were written by the genius,{" "}
           <a
             className="underline"
             href="https://www.facebook.com/KarlPilkington/"
