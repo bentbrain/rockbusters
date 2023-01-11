@@ -74,7 +74,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
       }
       setGuesses(sessionGuesses.guesses);
 
-      const stripGuess = sessionGuesses.guesses.map((a: string) =>
+      const lowerGuess = sessionGuesses.guesses.map((a: string) =>
         a
           .toLowerCase()
           .trim()
@@ -83,7 +83,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
 
       // If the answer was guessed in > the max guesses
       if (
-        stripGuess.includes(
+        lowerGuess.includes(
           answerString
             .toLowerCase()
             .trim()
