@@ -6,7 +6,15 @@ export const makeResultsString = (
   day: string
 ) => {
   e.currentTarget.innerText = "Copied";
-  const answerPosition = guesses.indexOf(
+
+  const stripGuess = guesses.map((a) =>
+    a
+      .toLowerCase()
+      .trim()
+      .replaceAll(/[^\w\s]/g, "")
+  );
+
+  const answerPosition = stripGuess.indexOf(
     answer
       .toLowerCase()
       .trim()
