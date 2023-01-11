@@ -74,8 +74,22 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
       }
       setGuesses(sessionGuesses.guesses);
 
+      const stripGuess = sessionGuesses.guesses.map((a: string) =>
+        a
+          .toLowerCase()
+          .trim()
+          .replaceAll(/[^\w\s]/g, "")
+      );
+
       // If the answer was guessed in > the max guesses
-      if (sessionGuesses.guesses.includes(answerString)) {
+      if (
+        stripGuess.includes(
+          answerString
+            .toLowerCase()
+            .trim()
+            .replaceAll(/[^\w\s]/g, "")
+        )
+      ) {
         setCorrect(true);
         setPlayable(false);
         setClueInitials([...allInitials]);
