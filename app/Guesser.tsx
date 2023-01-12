@@ -183,7 +183,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
 
   return (
     <div>
-      {question_audio && (
+      {question_audio && question_audio != "false" && (
         <AudioPlayer label="Question Audio" source={question_audio} />
       )}
       <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto text-xs md:text-sm  justify-center mb-4">
@@ -269,7 +269,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
         </form>
       ) : correct ? (
         <div className="flex flex-col col-span-4 justify-center items-center gap-2">
-          {answer_audio && (
+          {answer_audio && answer_audio != "false" && (
             <AudioPlayer label="Answer Audio" source={answer_audio} />
           )}
           <span className="col-span-4" id="correct">
