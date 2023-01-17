@@ -35,9 +35,11 @@ async function tempGetData() {
   return {
     hint: "temporary",
     initials: "N.S!",
-    answer: "cher",
+    answer: "Msx Fullstop",
     id: "1220",
     day: "4",
+    question_audio: "",
+    answer_audio: "",
   };
 }
 

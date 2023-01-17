@@ -113,6 +113,10 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
       );
   }, [guesses]);
 
+  function onlyUnique(value: any, index: any, self: any) {
+    return self.indexOf(value) === index;
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -140,6 +144,12 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
     for (let i = 0; i < Math.floor(lettersToReveal); ) {
       let randomInt = randomIntFromInterval(0, lettersLeft.length - 1);
       let letter = lettersLeft[randomInt];
+
+      var unique = lettersLeft.filter(onlyUnique);
+      if (unique.length == 1 && unique[0] == "") {
+        console.log("breaking");
+        break;
+      }
       if (letter == "" || letter == " ") {
         continue;
       } else {
@@ -154,6 +164,7 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
     setClueInitials(newClues);
 
     setGuesses((guesses) => [...guesses, selection.toLowerCase().trim()]);
+
     if (
       selection
         .toLowerCase()
@@ -168,11 +179,13 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
     } else {
       setCorrect(false);
     }
+
     if (guesses.length == maxGuesses - 1) {
       setPlayable(false);
       SetStats(false, 0);
       setClueInitials([...allInitials]);
     }
+
     setSelection("");
   };
 
