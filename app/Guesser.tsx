@@ -140,16 +140,20 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
     }
 
     let newClues = [...clueInitials];
-
+    let count = 0;
     for (let i = 0; i < Math.floor(lettersToReveal); ) {
-      let randomInt = randomIntFromInterval(0, lettersLeft.length - 1);
-      let letter = lettersLeft[randomInt];
-
-      var unique = lettersLeft.filter(onlyUnique);
-      if (unique.length == 1 && unique[0] == "") {
-        console.log("breaking");
+      count++;
+      if (count == Math.floor(lettersToReveal) * 3) {
         break;
       }
+      let randomInt = randomIntFromInterval(0, lettersLeft.length - 1);
+      let letter = lettersLeft[randomInt];
+      var unique = lettersLeft.filter(onlyUnique);
+
+      // if (unique.length == 1 && unique[0] == "") {
+      //   break;
+      // }
+
       if (letter == "" || letter == " ") {
         continue;
       } else {
