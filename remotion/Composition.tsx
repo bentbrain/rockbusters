@@ -25,7 +25,7 @@ export const MyComposition = ({ text, audio }: Props) => {
   const scale = visualization.reduce((partialSum, a) => partialSum + a, 0);
 
   return (
-    <div className="w-full bg-white dark:bg-stone-900 h-full flex flex-col justify-center gap-20  items-center text-center pt-6 pb-20 px-10 text-[5rem] font-bold ">
+    <div className="w-full  bg-white dark:bg-stone-900 h-full flex flex-col justify-start sm:justify-center gap-5  items-center text-center sm:pt-10 pb-20 px-10 text-[5rem] font-bold ">
       <div>
         <img
           style={{
