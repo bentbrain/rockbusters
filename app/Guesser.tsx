@@ -200,9 +200,9 @@ function Guesser({ answer, id, day, question_audio, answer_audio }: Props) {
 
   return (
     <div>
-      {question_audio && question_audio != "false" && (
+      {/* {question_audio && question_audio != "false" && (
         <AudioPlayer label="Question Audio" source={question_audio} />
-      )}
+      )} */}
       <div className="letters flex gap-1 flex-wrap max-w-[min(400px,100%)] mx-auto text-xs md:text-sm  justify-center mb-4">
         {clueInitials.includes(" ")
           ? clueInitials
