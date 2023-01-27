@@ -2,6 +2,8 @@ import React from "react";
 import Guesser from "./Guesser";
 import CryptoJS from "crypto-js";
 import AudioPlayer from "./components/AudioPlayer";
+import { VideoPlayer } from "./components/VideoPlayer";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 
 const fetchURL = process.env.FETCH_URL;
 const cryptKey = process.env.NEXT_PUBLIC_CRYPT_KEY;
@@ -48,9 +50,17 @@ async function Home() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-bold mb-2">
-        #{question.day}: {question.hint}
-      </h1>
+      {question.question_audio != "false" ? (
+        <VideoPlayer
+          hint={`#${question.day}: ${question.hint}`}
+          audio={question.question_audio}
+        />
+      ) : (
+        <h1 className="text-2xl font-bold mb-2">
+          #{question.day}: {question.hint}
+        </h1>
+      )}
+
       <Guesser
         id={question.id}
         day={question.day}
