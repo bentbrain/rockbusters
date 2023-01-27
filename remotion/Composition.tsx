@@ -20,7 +20,7 @@ export const MyComposition = ({ text, audio }: Props) => {
     frame,
     audioData,
     numberOfSamples: 16,
-  }); // [0.22, 0.1, 0.01, 0.01, 0.01, 0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  });
 
   const scale = visualization.reduce((partialSum, a) => partialSum + a, 0);
 
@@ -29,7 +29,7 @@ export const MyComposition = ({ text, audio }: Props) => {
       <div>
         <img
           style={{
-            transform: `scale(${1 + scale / 5})`,
+            transform: `scale(${1 + visualization[1] / 4})`,
             width: 400,
           }}
           src={
