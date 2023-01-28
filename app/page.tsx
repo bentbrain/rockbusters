@@ -50,7 +50,7 @@ async function Home() {
 
   return (
     <div className="text-center">
-      {question.question_audio != "false" ? (
+      {/* {question.question_audio != "false" ? (
         <VideoPlayer
           hint={`#${question.day}: ${question.hint}`}
           audio={question.question_audio}
@@ -59,8 +59,10 @@ async function Home() {
         <h1 className="text-2xl font-bold mb-2">
           #{question.day}: {question.hint}
         </h1>
-      )}
-
+      )} */}
+      <h1 className="text-2xl font-bold mb-2">
+        #{question.day}: {question.hint}
+      </h1>
       <Guesser
         id={question.id}
         day={question.day}
