@@ -31,6 +31,7 @@ const ResetButton = ({ removeAnswers }: { removeAnswers: () => void }) => {
 
   const handleReset = () => {
     removeAnswers();
+    console.log('removed')
     router.refresh();
   };
 
@@ -102,7 +103,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         progress,
       },
     ]);
-  }, [state, gameOver, gameWon, setAnswers]);
+  }, [state]);
 
   useEffect(() => {
     if (state.guessNumber === 0) return;
@@ -130,7 +131,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         };
       });
     }
-  }, [gameOver, gameWon, state, setStats, currentGuesses, answers]);
+  }, [gameOver, gameWon,]);
 
   return (
     <div className="grid  gap-4">
