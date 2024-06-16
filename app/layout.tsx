@@ -10,6 +10,7 @@ import { StatisticDisplay } from "@/components/ui/statistic-display";
 import CountdownTimer from "@/components/ui/countdown-timer";
 import { getCurrentItem } from "@/lib/utils";
 import Image from "next/image";
+import { Analytics } from "@vercel/analytics/react"
 
 const absoluteURL = process.env.FETCH_SELF_URL;
 
@@ -83,6 +84,7 @@ export default function RootLayout({
             </div>
             <Toaster />
           </ThemeProvider>
+          <Analytics />
         </body>
       </CSPostHogProvider>
     </html>
