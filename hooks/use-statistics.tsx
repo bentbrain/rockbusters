@@ -17,6 +17,8 @@ export type Stats = {
   guesses: { [key: string]: number };
 };
 
+// TODO: update statistics to use maxGuesses config
+
 export function useStatistics() {
   const useStats = useLocalStorageState<Stats>("rockbusters_stats", {
     defaultValue: {

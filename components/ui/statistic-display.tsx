@@ -133,7 +133,7 @@ function OrderOldStats(guesses: Stats["guesses"]) {
   }
   return arrayFromOldStats;
 }
-
+// TODO: update statistics to use maxGuesses config
 function InformationContent({
   className,
   stats,

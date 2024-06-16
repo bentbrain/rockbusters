@@ -199,7 +199,6 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
           </div>
         )}
       </Card>
-      <ResetButton removeAnswers={removeAnswers} />
     </div>
   );
 }
