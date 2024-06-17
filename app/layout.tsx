@@ -11,13 +11,14 @@ import CountdownTimer from "@/components/ui/countdown-timer";
 import { getCurrentItem } from "@/lib/utils";
 import Image from "next/image";
 import { Analytics } from "@vercel/analytics/react"
+import { env } from "@/lib/env";
 
-const absoluteURL = process.env.FETCH_SELF_URL;
+const absoluteURL = env.FETCH_SELF_URL;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { dayID } = getCurrentItem();
   return {
-    metadataBase: new URL(absoluteURL ?? ""),
+    metadataBase: new URL(absoluteURL),
     title: "Rockbusters",
     description:
       "Guess the band or artist in 5 tries. A new clue is available every day.",

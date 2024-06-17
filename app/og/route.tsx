@@ -3,11 +3,12 @@ import { ImageResponse } from "next/og";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as fs from "fs";
+import { env } from "@/lib/env";
 
 // App router includes @vercel/og.
 // No need to install it.
 
-const fetchURL = process.env.FETCH_SELF_URL;
+const fetchURL = env.FETCH_SELF_URL;
 
 export async function GET() {
   const { hint, dayID } = getCurrentItem();
