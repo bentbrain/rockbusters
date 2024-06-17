@@ -11,7 +11,7 @@ export default async function Home() {
       <div className="max-w-screen-sm w-full grid place-items-center gap-2 text-center mx-auto">
         <div className="">
           <Guesser
-            key={"countdown-timer"}
+            key={`guesser-${dayID}`}
             id={dayID}
             hint={hint.hint}
             answer={ConcealAnswer(hint.answer)}
