@@ -1,17 +1,19 @@
-import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import { ModeToggle } from "@/components/ui/dark-mode-toggle";
 import { CSPostHogProvider } from "@/components/providers/posthog-provider";
-import { InformationDisplay } from "@/components/ui/information-display";
-import { StatisticDisplay } from "@/components/ui/statistic-display";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import CountdownTimer from "@/components/ui/countdown-timer";
-import { getCurrentItem } from "@/lib/utils";
-import Image from "next/image";
-import { Analytics } from "@vercel/analytics/react"
+import { ModeToggle } from "@/components/ui/dark-mode-toggle";
+import { InformationDisplay } from "@/components/ui/information-display";
+import { Toaster } from "@/components/ui/sonner";
+import { StatisticDisplay } from "@/components/ui/statistic-display";
 import { env } from "@/lib/env";
+import { getCurrentItem } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/react";
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
+import "./globals.css";
 
 const absoluteURL = env.FETCH_SELF_URL;
 
@@ -86,6 +88,7 @@ export default function RootLayout({
             <Toaster />
           </ThemeProvider>
           <Analytics />
+          <SpeedInsights />
         </body>
       </CSPostHogProvider>
     </html>
