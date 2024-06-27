@@ -1,7 +1,7 @@
 import { ConcealAnswer, getCurrentItem } from "@/lib/utils";
 import Guesser from "../components/ui/guesser";
 
-export const dynamic = "force-cache";
+export const dynamic = "auto";
 
 export default async function Home() {
   const { hint, dayID } = getCurrentItem();

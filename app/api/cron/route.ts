@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
-    revalidatePath("/");
+    revalidatePath("/", "layout");
     return Response.json({ message: "success", status: 200 });
   } catch (error) {
     console.error(error);

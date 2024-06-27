@@ -53,5 +53,5 @@ export async function SubmitAnswer(
 }
 
 export async function revalidateGame() {
-  revalidatePath("/");
+  revalidatePath("/", "layout");
 }
