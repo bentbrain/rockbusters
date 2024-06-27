@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Card } from "./card";
+import { revalidateGame } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Card } from "./card";
+
 const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
   const router = useRouter();
 
@@ -11,6 +13,7 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
     minutes: 0,
     seconds: 0,
   });
+
   useEffect(() => {
     if (serverTime) {
       const calculateTimeLeft = () => {
@@ -30,7 +33,10 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
         const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
         const seconds = Math.floor((timeLeft / 1000) % 60);
 
-        if (hours === 0 && minutes === 0 && seconds == 0) router.refresh();
+        if (hours === 0 && minutes === 0 && seconds == 0) {
+          revalidateGame();
+          router.refresh();
+        }
 
         return {
           hours,

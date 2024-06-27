@@ -3,6 +3,7 @@
 import { maxGuesses } from "@/lib/config";
 import { CheckAnswer, ConcealAnswer, replaceCharAt } from "@/lib/utils";
 import { getCurrentItem } from "@/lib/utils";
+import { revalidatePath } from "next/cache";
 
 export async function SubmitAnswer(
   previousState: {
@@ -49,4 +50,8 @@ export async function SubmitAnswer(
     guessNumber: guessNumber + 1,
     progress: newProgress,
   };
+}
+
+export async function revalidateGame() {
+  revalidatePath("/");
 }
