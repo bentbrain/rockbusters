@@ -22,7 +22,7 @@ const GuessInput = ({
   currentProgress: string;
   guessNumber: number;
   isPending: boolean;
-  ref: RefObject<HTMLInputElement>;
+  ref: RefObject<HTMLInputElement | null>;
 }>) => {
   const [currentGuess, setCurrentGuess] = useState("");
   const words = answer.split(" ");

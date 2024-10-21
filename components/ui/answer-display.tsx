@@ -10,7 +10,7 @@ function AnswerDisplay({
   isIncorrect,
 }: Readonly<{
   answer: string;
-  inputRef: RefObject<{ focus: () => void }>;
+  inputRef: RefObject<{ focus: () => void } | null>;
   isPending: boolean;
   isIncorrect: boolean;
 }>) {
@@ -18,7 +18,7 @@ function AnswerDisplay({
   let globalIndex = 0;
   return (
     <div
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => inputRef?.current?.focus()}
       className="uppercase justify-center grid"
     >
       <div className="flex flex-wrap justify-center font-bold items-center gap-2">
