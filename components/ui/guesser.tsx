@@ -191,7 +191,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         {(gameOver || gameWon) && (
           <div className="grid mt-6 gap-4">
             {gameWon && <p>Right, well done then 🍻</p>}
-            {gameOver && <p>You&apos;re and idiot. Play a record.</p>}
+            {gameOver && <p>You&apos;re an idiot. Play a record.</p>}
             <div className="flex items-center justify-center gap-3">
               <StatisticDisplay displayType="text" />
               <CopyButton id={id} text={latestGuess?.progress ?? ""} />
