@@ -78,9 +78,9 @@ export default function RootLayout({
                   <a
                     target="_blank"
                     className=" hover:underline"
-                    href="https://www.instagram.com/bent.brain/"
+                    href="https://www.instagram.com/bent.build/"
                   >
-                    @bent.brain)
+                    @bent.build)
                   </a>
                 </p>
               </div>
