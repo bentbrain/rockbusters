@@ -12,6 +12,7 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
     hours: 0,
     minutes: 0,
     seconds: 0,
+    milliseconds: 0,
   });
 
   useEffect(() => {
@@ -28,12 +29,14 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
         ) {
           resetDate.setDate(resetDate.getDate() + 1); // Move to the next day if it's exactly midnight
         }
-        const timeLeft = resetDate.getTime() - now.getTime();
-        const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeLeft / 1000) % 60);
+        const remaining = resetDate.getTime() - now.getTime();
+        const clamped = Math.max(remaining, 0);
+        const hours = Math.floor((clamped / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((clamped / (1000 * 60)) % 60);
+        const seconds = Math.floor((clamped / 1000) % 60);
+        const milliseconds = clamped % 1000;
 
-        if (hours === 0 && minutes === 0 && seconds == 0) {
+        if (clamped === 0) {
           revalidateGame();
           router.refresh();
         }
@@ -42,12 +45,13 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
           hours,
           minutes,
           seconds,
+          milliseconds,
         };
       };
       const updateTimer = () => {
         setTimeLeft(calculateTimeLeft());
       };
-      const timer = setInterval(updateTimer, 1000);
+      const timer = setInterval(updateTimer, 33);
       updateTimer(); // Initial call to set the timer
       return () => clearInterval(timer);
     }
@@ -57,15 +61,19 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
       <h2>Next Rockbuster</h2>
       <div className="flex items-center   justify-center gap-0.5 ">
         <Card className="w-[3.5ch] h-[3.5ch] grid  place-items-center text-muted-foreground  shadow-none rounded-sm">
-          {timeLeft.hours}
+          {timeLeft.hours.toString().padStart(2, "0")}
         </Card>
         :
         <Card className="w-[3.5ch] h-[3.5ch] grid place-items-center text-muted-foreground  shadow-none rounded-sm">
-          {timeLeft.minutes}
+          {timeLeft.minutes.toString().padStart(2, "0")}
         </Card>
         :
         <Card className="w-[3.5ch] h-[3.5ch] grid place-items-center text-muted-foreground  shadow-none rounded-sm">
-          {timeLeft.seconds}
+          {timeLeft.seconds.toString().padStart(2, "0")}
+        </Card>
+        .
+        <Card className="w-[4.5ch] h-[3.5ch] grid place-items-center text-muted-foreground shadow-none rounded-sm">
+          {timeLeft.milliseconds.toString().padStart(3, "0")}
         </Card>
       </div>
     </div>
