@@ -49,9 +49,9 @@ export default function RootLayout({
             disableTransitionOnChange
             enableSystem
           >
-            <div className=" min-h-dvh grid grid-rows-[auto,1fr,auto]">
-              <header className=" bg-background grid-cols-2 md:grid-cols-[200px,1fr,200px] dark:bg-slate-900 p-4 grid items-center mb-6">
-                <div className="md:col-start-2 gap-2 flex md:justify-center items-center">
+            <div className="min-h-dvh grid grid-rows-[auto_1fr_auto]">
+              <header className="bg-background dark:bg-slate-900 p-4 grid items-center mb-6 grid-cols-[1fr_auto_1fr]">
+                <div className="col-start-2 gap-2 flex justify-center items-center">
                   <Image
                     src={
                       hint.hint.toLowerCase().includes("jamaican")
@@ -64,7 +64,7 @@ export default function RootLayout({
                   />
                   <h1 className="font-bold text-lg">Rockbusters</h1>
                 </div>
-                <div className="flex items-center justify-end gap-2 w-full">
+                <div className="col-start-3 flex items-center justify-end gap-2 w-full">
                   <InformationDisplay />
                   <StatisticDisplay displayType="icon" />
                   <ModeToggle className="" />
