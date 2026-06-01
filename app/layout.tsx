@@ -38,7 +38,7 @@ export default function RootLayout({
   const currentTime = new Date().toUTCString();
   const { hint } = getCurrentItem();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <CSPostHogProvider>
         <body
           className={`${GeistSans.className} bg-secondary dark:bg-background`}

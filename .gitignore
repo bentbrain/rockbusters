@@ -9,6 +9,7 @@ yarn.lock
 
 # TESTING
 /coverage
+playwright/.cache/
 test-results/
 *.lcov
 .nyc_output
