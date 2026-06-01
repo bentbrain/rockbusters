@@ -1,3 +1,5 @@
+import { rockbustersDistinctIdCookie } from "@/lib/feature-flags";
+import { isPreviousGuessesEnabled } from "@/lib/posthog";
 import {
   getAbsoluteUrl,
   siteDescription,
@@ -5,12 +7,17 @@ import {
   siteTitle,
 } from "@/lib/seo";
 import { ConcealAnswer, getCurrentItem } from "@/lib/utils";
+import { cookies } from "next/headers";
 import Guesser from "../components/ui/guesser";
 
 export const dynamic = "auto";
 
-export default function Home() {
+export default async function Home() {
   const { hint, dayID } = getCurrentItem();
+  const cookieStore = await cookies();
+  const distinctId =
+    cookieStore.get(rockbustersDistinctIdCookie)?.value ?? "rockbusters";
+  const showPreviousGuesses = await isPreviousGuessesEnabled(distinctId);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -42,6 +49,7 @@ export default function Home() {
             id={dayID}
             hint={hint.hint}
             answer={ConcealAnswer(hint.answer)}
+            showPreviousGuesses={showPreviousGuesses}
             targetAnswer={hint.answer}
           />
         </div>

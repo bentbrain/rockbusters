@@ -15,12 +15,14 @@ import AnswerDisplay from "./answer-display";
 import { Card } from "./card";
 import CopyButton from "./copy-button";
 import GuessInput, { GuessInputSkeleton } from "./guess-input";
+import { PreviousGuesses } from "./previous-guesses";
 import { StatisticDisplay } from "./statistic-display";
 
 interface Props {
   answer: string;
   hint: string;
   id: number;
+  showPreviousGuesses: boolean;
   targetAnswer: string;
 }
 
@@ -40,7 +42,13 @@ function countRevealedCharacters(answer: string) {
   return answer.replaceAll("#", "").replaceAll(" ", "").length;
 }
 
-function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
+function Guesser({
+  answer,
+  hint,
+  id,
+  showPreviousGuesses,
+  targetAnswer,
+}: Readonly<Props>) {
   const initialState = createInitialGuess(answer);
   const [answers, setAnswers, { removeItem: removeAnswers }] =
     useLocalStorageState<Guess[]>("rockbusters_todays_answers", {
@@ -189,6 +197,9 @@ function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
               ? latestGuess?.progress
               : initialState.progress}
           </div>
+          {showPreviousGuesses && (
+            <PreviousGuesses answer={answer} guesses={currentGuesses} />
+          )}
           <AnswerDisplay
             isIncorrect={gameOver}
             isPending={false}
