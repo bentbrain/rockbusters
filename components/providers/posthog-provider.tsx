@@ -4,7 +4,7 @@ import { disableAnalytics, initializeAnalytics } from "@/lib/analytics";
 import { env } from "@/lib/env";
 import { useEffect } from "react";
 
-const posthogApiPath = "/ingest";
+const posthogApiPath = "/rbx";
 
 export function CSPostHogProvider({
   children,

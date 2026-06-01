@@ -61,10 +61,6 @@ export function disableAnalytics() {
   setAnalyticsEnabled(false);
 }
 
-export function getPostHogClient() {
-  return posthogClientPromise;
-}
-
 function captureEvent(eventName: string, properties: CaptureProperties) {
   if (!isAnalyticsEnabled) return;
   if (posthogClientPromise === null) return;

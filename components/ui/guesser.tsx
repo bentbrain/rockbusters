@@ -5,7 +5,6 @@ import {
   trackGameLoaded,
   trackGuessSubmitted,
 } from "@/lib/analytics";
-import { useFeatureFlagEnabled } from "@/hooks/use-feature-flag-enabled";
 import { maxGuesses } from "@/lib/config";
 import { createInitialGuess, processGuess } from "@/lib/guess";
 import type { Guess } from "@/lib/guess";
@@ -21,9 +20,9 @@ import { StatisticDisplay } from "./statistic-display";
 
 interface Props {
   answer: string;
-  forceShowPreviousGuesses?: boolean;
   hint: string;
   id: number;
+  showPreviousGuesses: boolean;
   targetAnswer: string;
 }
 
@@ -45,9 +44,9 @@ function countRevealedCharacters(answer: string) {
 
 function Guesser({
   answer,
-  forceShowPreviousGuesses = false,
   hint,
   id,
+  showPreviousGuesses,
   targetAnswer,
 }: Readonly<Props>) {
   const initialState = createInitialGuess(answer);
@@ -76,9 +75,6 @@ function Guesser({
   const gameOver =
     currentGuesses.length === maxGuesses && !latestGuess?.isCorrect;
   const gameWon = latestGuess?.isCorrect;
-  const isPreviousGuessesFlagEnabled = useFeatureFlagEnabled("previous-guesses");
-  const showPreviousGuesses =
-    forceShowPreviousGuesses || isPreviousGuessesFlagEnabled;
 
   const inputRef = useRef<HTMLInputElement>(null);
   const trackedGameLoadRef = useRef<number | null>(null);

@@ -4,7 +4,7 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 
 jiti("./lib/env");
 
-const posthogIngestHost = "https://us.i.posthog.com";
+const posthogProxyHost = "https://us.i.posthog.com";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -14,8 +14,8 @@ const nextConfig = {
   rewrites() {
     return [
       {
-        source: "/ingest/:path*",
-        destination: `${posthogIngestHost}/:path*`,
+        source: "/rbx/:path*",
+        destination: `${posthogProxyHost}/:path*`,
       },
     ];
   },
