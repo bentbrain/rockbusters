@@ -19,6 +19,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { trackPanelOpened } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { Info } from "lucide-react";
 import { Separator } from "./separator";
@@ -26,10 +27,16 @@ import { Separator } from "./separator";
 export function InformationDisplay() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const setTrackedOpen = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (nextOpen) {
+      trackPanelOpened({ panel: "help", trigger: "icon" });
+    }
+  };
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setTrackedOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" size="icon">
             <Info className="h-[1.2rem] w-[1.2rem]" />
@@ -52,7 +59,7 @@ export function InformationDisplay() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={setTrackedOpen}>
       <DrawerTrigger asChild>
         <Button variant="outline" size="icon">
           <Info className="h-[1.2rem] w-[1.2rem]" />

@@ -4,6 +4,9 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     FETCH_SELF_URL: z.string().url(),
+    VERCEL_ENV: z
+      .enum(["development", "preview", "production"])
+      .optional(),
   },
 
   client: {

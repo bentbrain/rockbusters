@@ -80,12 +80,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const shouldLoadPostHog = env.VERCEL_ENV !== "preview";
+  const shouldLoadVercelAnalytics = env.VERCEL_ENV === "production";
   const currentTime = new Date().toUTCString();
   const initialTimeLeft = getTimeLeft(currentTime);
   const { hint } = getCurrentItem();
   return (
     <html lang="en" suppressHydrationWarning>
-      <CSPostHogProvider>
+      <CSPostHogProvider enabled={shouldLoadPostHog}>
         <body
           className={`${GeistSans.className} bg-secondary dark:bg-background`}
         >
@@ -132,8 +134,12 @@ export default function RootLayout({
             </div>
             <Toaster />
           </ThemeProvider>
-          <Analytics />
-          <SpeedInsights />
+          {shouldLoadVercelAnalytics && (
+            <>
+              <Analytics />
+              <SpeedInsights />
+            </>
+          )}
         </body>
       </CSPostHogProvider>
     </html>
