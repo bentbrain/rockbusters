@@ -9,6 +9,7 @@ describe("guess processing", () => {
       updatedAnswer: "h#### w####",
       guessNumber: 0,
       progress: "💚💚💚💚💚",
+      submittedAnswer: "",
     });
   });
 
@@ -28,6 +29,7 @@ describe("guess processing", () => {
       updatedAnswer: answer,
       guessNumber: 1,
       progress: "💚💚💚💚💚",
+      submittedAnswer: "helloworld",
     });
   });
 
@@ -46,6 +48,7 @@ describe("guess processing", () => {
       isCorrect: false,
       guessNumber: 2,
       progress: "💚💔💚💚💚",
+      submittedAnswer: "hellowzrld",
       updatedAnswer: "hello w#rld",
     });
   });
@@ -66,6 +69,7 @@ describe("guess processing", () => {
       updatedAnswer: answer,
       guessNumber: maxGuesses,
       progress: "💔💔💔💔💔",
+      submittedAnswer: "wrongguess",
     });
   });
 });

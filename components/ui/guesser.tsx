@@ -5,6 +5,7 @@ import {
   trackGameLoaded,
   trackGuessSubmitted,
 } from "@/lib/analytics";
+import { useFeatureFlagEnabled } from "@/hooks/use-feature-flag-enabled";
 import { maxGuesses } from "@/lib/config";
 import { createInitialGuess, processGuess } from "@/lib/guess";
 import type { Guess } from "@/lib/guess";
@@ -15,10 +16,12 @@ import AnswerDisplay from "./answer-display";
 import { Card } from "./card";
 import CopyButton from "./copy-button";
 import GuessInput, { GuessInputSkeleton } from "./guess-input";
+import { PreviousGuesses } from "./previous-guesses";
 import { StatisticDisplay } from "./statistic-display";
 
 interface Props {
   answer: string;
+  forceShowPreviousGuesses?: boolean;
   hint: string;
   id: number;
   targetAnswer: string;
@@ -40,7 +43,13 @@ function countRevealedCharacters(answer: string) {
   return answer.replaceAll("#", "").replaceAll(" ", "").length;
 }
 
-function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
+function Guesser({
+  answer,
+  forceShowPreviousGuesses = false,
+  hint,
+  id,
+  targetAnswer,
+}: Readonly<Props>) {
   const initialState = createInitialGuess(answer);
   const [answers, setAnswers, { removeItem: removeAnswers }] =
     useLocalStorageState<Guess[]>("rockbusters_todays_answers", {
@@ -67,6 +76,9 @@ function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
   const gameOver =
     currentGuesses.length === maxGuesses && !latestGuess?.isCorrect;
   const gameWon = latestGuess?.isCorrect;
+  const isPreviousGuessesFlagEnabled = useFeatureFlagEnabled("previous-guesses");
+  const showPreviousGuesses =
+    forceShowPreviousGuesses || isPreviousGuessesFlagEnabled;
 
   const inputRef = useRef<HTMLInputElement>(null);
   const trackedGameLoadRef = useRef<number | null>(null);
@@ -189,6 +201,9 @@ function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
               ? latestGuess?.progress
               : initialState.progress}
           </div>
+          {showPreviousGuesses && (
+            <PreviousGuesses answer={answer} guesses={currentGuesses} />
+          )}
           <AnswerDisplay
             isIncorrect={gameOver}
             isPending={false}

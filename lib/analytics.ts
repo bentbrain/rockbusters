@@ -1,19 +1,77 @@
 "use client";
 
-import posthog from "posthog-js";
+import { useSyncExternalStore } from "react";
+import type { PostHog, PostHogConfig } from "posthog-js";
 
 type CaptureProperties = Record<string, boolean | number | string>;
 type GameResult = "lost" | "won";
 
 let isAnalyticsEnabled = false;
+let posthogClientPromise: Promise<PostHog> | null = null;
+const analyticsEnabledSubscribers = new Set<() => void>();
 
 export function setAnalyticsEnabled(enabled: boolean) {
   isAnalyticsEnabled = enabled;
+  analyticsEnabledSubscribers.forEach((notify) => {
+    notify();
+  });
+}
+
+function subscribeToAnalyticsEnabled(notify: () => void) {
+  analyticsEnabledSubscribers.add(notify);
+
+  return () => {
+    analyticsEnabledSubscribers.delete(notify);
+  };
+}
+
+function getAnalyticsEnabledSnapshot() {
+  return isAnalyticsEnabled;
+}
+
+function getServerAnalyticsEnabledSnapshot() {
+  return false;
+}
+
+export function useAnalyticsEnabled() {
+  return useSyncExternalStore(
+    subscribeToAnalyticsEnabled,
+    getAnalyticsEnabledSnapshot,
+    getServerAnalyticsEnabledSnapshot,
+  );
+}
+
+export function initializeAnalytics(
+  apiKey: string,
+  options: Partial<PostHogConfig>,
+) {
+  if (posthogClientPromise === null) {
+    setAnalyticsEnabled(true);
+    posthogClientPromise = import("posthog-js").then((module) => {
+      module.default.init(apiKey, options);
+
+      return module.default;
+    });
+  }
+
+  return posthogClientPromise;
+}
+
+export function disableAnalytics() {
+  setAnalyticsEnabled(false);
+}
+
+export function getPostHogClient() {
+  return posthogClientPromise;
 }
 
 function captureEvent(eventName: string, properties: CaptureProperties) {
   if (!isAnalyticsEnabled) return;
-  posthog.capture(eventName, properties);
+  if (posthogClientPromise === null) return;
+
+  void posthogClientPromise.then((client) => {
+    client.capture(eventName, properties);
+  });
 }
 
 interface GameLoadedProperties {
