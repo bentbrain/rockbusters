@@ -42,6 +42,7 @@ export default function Home() {
             id={dayID}
             hint={hint.hint}
             answer={ConcealAnswer(hint.answer)}
+            targetAnswer={hint.answer}
           />
         </div>
       </div>

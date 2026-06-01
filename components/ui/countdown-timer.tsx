@@ -1,48 +1,38 @@
 "use client";
 
 import { revalidateGame } from "@/app/actions";
+import { getTimeLeft } from "@/lib/countdown";
+import type { TimeLeft } from "@/lib/countdown";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card } from "./card";
 
-const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
+const CountdownTimer = ({
+  initialTimeLeft,
+  serverTime,
+}: {
+  initialTimeLeft: TimeLeft;
+  serverTime: string;
+}) => {
   const router = useRouter();
 
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
 
   useEffect(() => {
     if (serverTime) {
       const calculateTimeLeft = () => {
-        const now = new Date();
-        const resetDate = new Date(serverTime);
-        resetDate.setUTCHours(24, 0, 0, 0); // Set to midnight UTC
-        if (now.getTime() >= resetDate.getTime()) router.refresh();
-        if (
-          now.getUTCHours() === 0 &&
-          now.getUTCMinutes() === 0 &&
-          now.getUTCSeconds() === 0
-        ) {
-          resetDate.setDate(resetDate.getDate() + 1); // Move to the next day if it's exactly midnight
-        }
-        const timeLeft = resetDate.getTime() - now.getTime();
-        const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeLeft / 1000) % 60);
+        const nextTimeLeft = getTimeLeft(serverTime);
 
-        if (hours === 0 && minutes === 0 && seconds == 0) {
+        if (
+          nextTimeLeft.hours === 0 &&
+          nextTimeLeft.minutes === 0 &&
+          nextTimeLeft.seconds === 0
+        ) {
           void revalidateGame();
           router.refresh();
         }
 
-        return {
-          hours,
-          minutes,
-          seconds,
-        };
+        return nextTimeLeft;
       };
       const updateTimer = () => {
         setTimeLeft(calculateTimeLeft());
