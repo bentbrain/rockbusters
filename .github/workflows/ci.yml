@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      FETCH_SELF_URL: http://127.0.0.1:3219
+      KV_REST_API_READ_ONLY_TOKEN: test-read-token
+      KV_REST_API_TOKEN: test-token
+      KV_REST_API_URL: https://example.com
+      KV_URL: https://example.com
+      NEXT_PUBLIC_POSTHOG_HOST: https://example.com
+      NEXT_PUBLIC_POSTHOG_KEY: test-posthog-key
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Unit and integration tests
+        run: pnpm test
+
+      - name: Component tests
+        run: pnpm test:ct
+
+      - name: End-to-end tests
+        run: pnpm test:e2e
