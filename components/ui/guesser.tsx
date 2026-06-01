@@ -1,7 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { maxGuesses } from "@/lib/config";
-import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import { SubmitAnswer } from "../../app/actions";
@@ -9,38 +7,22 @@ import AnswerDisplay from "./answer-display";
 import CopyButton from "./copy-button";
 import GuessInput from "./guess-input";
 import { Card } from "./card";
-import { Stats, useStatistics } from "@/hooks/use-statistics";
+import { useStatistics } from "@/hooks/use-statistics";
 import { StatisticDisplay } from "./statistic-display";
 import { CalculateGuesses, cn } from "@/lib/utils";
 
-type Props = {
+interface Props {
   answer: string;
   hint: string;
   id: number;
-};
+}
 
-export type Guess = {
+export interface Guess {
   updatedAnswer: string;
   isCorrect: boolean;
   guessNumber: number;
   progress: string;
-};
-
-const ResetButton = ({ removeAnswers }: { removeAnswers: () => void }) => {
-  const router = useRouter();
-
-  const handleReset = () => {
-    removeAnswers();
-    console.log("removed");
-    router.refresh();
-  };
-
-  return (
-    <Button variant={"destructive"} onMouseDown={handleReset}>
-      Reset
-    </Button>
-  );
-};
+}
 
 function Guesser({ answer, hint, id }: Readonly<Props>) {
   const initialState: Guess = {
@@ -70,7 +52,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
       defaultValue: 0,
     }
   );
-  const [stats, setStats] = useStatistics();
+  const [, setStats] = useStatistics();
   const latestGuess = answers.at(-1);
   const currentGuesses = answers.filter((answer) => answer.guessNumber != 0);
   const gameOver =
@@ -103,7 +85,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         progress,
       },
     ]);
-  }, [state]);
+  }, [gameOver, gameWon, setAnswers, state]);
 
   useEffect(() => {
     if (state.guessNumber === 0) return;
@@ -131,7 +113,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         };
       });
     }
-  }, [gameOver, gameWon]);
+  }, [answers, gameOver, gameWon, setStats, state.guessNumber]);
 
   return (
     <div className="grid  gap-4">

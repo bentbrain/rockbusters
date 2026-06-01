@@ -1,21 +1,12 @@
 import useLocalStorageState from "use-local-storage-state";
 
-type Guesses = {
-  "0": number;
-  "1": number;
-  "2": number;
-  "3": number;
-  "4": number;
-  "5": number;
-};
-
-export type Stats = {
+export interface Stats {
   played: number;
   wins: number;
   currentStreak: number;
   maxStreak: number;
-  guesses: { [key: string]: number };
-};
+  guesses: Record<string, number>;
+}
 
 // TODO: update statistics to use maxGuesses config
 

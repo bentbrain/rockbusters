@@ -6,9 +6,9 @@ import { toast } from "sonner";
 function CopyButton({ text, id }: Readonly<{ text: string; id: number }>) {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     try {
-      navigator.clipboard.writeText(`Rockbusters #${id}
+      await navigator.clipboard.writeText(`Rockbusters #${id}
 
 ${text}
 https://rockbusters.lol/`);
@@ -17,7 +17,7 @@ https://rockbusters.lol/`);
       setTimeout(() => {
         setIsCopied(false);
       }, 1000);
-    } catch (e) {
+    } catch {
       toast.error("Error copying results");
     }
   };

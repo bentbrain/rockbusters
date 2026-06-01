@@ -5,6 +5,11 @@ import { CheckAnswer, ConcealAnswer, replaceCharAt } from "@/lib/utils";
 import { getCurrentItem } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 
+function getStringValue(formData: FormData, key: string) {
+  const value = formData.get(key);
+  return typeof value === "string" ? value : undefined;
+}
+
 export async function SubmitAnswer(
   previousState: {
     isCorrect: boolean;
@@ -14,10 +19,10 @@ export async function SubmitAnswer(
   },
   formData: FormData
 ) {
-  const guess = formData.get("answer")?.toString();
-  const answerProgress = formData.get("answer-progress")?.toString();
-  const currentProgress = formData.get("current-progress")?.toString();
-  const guessNumber = parseInt(formData.get("guess-number")?.toString() ?? "0");
+  const guess = getStringValue(formData, "answer");
+  const answerProgress = getStringValue(formData, "answer-progress");
+  const currentProgress = getStringValue(formData, "current-progress");
+  const guessNumber = parseInt(getStringValue(formData, "guess-number") ?? "0");
 
   if (!guess) {
     return {
@@ -38,11 +43,9 @@ export async function SubmitAnswer(
 
   const newProgress = replaceCharAt(
     currentProgress ?? previousState.progress,
-    guessNumber ?? previousState.guessNumber,
+    guessNumber,
     isCorrect ? "💚" : "💔"
   );
-
-  console.log(updatedAnswer);
 
   return {
     isCorrect: isCorrect,

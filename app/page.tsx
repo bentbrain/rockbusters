@@ -3,7 +3,7 @@ import Guesser from "../components/ui/guesser";
 
 export const dynamic = "auto";
 
-export default async function Home() {
+export default function Home() {
   const { hint, dayID } = getCurrentItem();
 
   return (

@@ -1,8 +1,5 @@
 import { getCurrentItem } from "@/lib/utils";
 import { ImageResponse } from "next/og";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import * as fs from "fs";
 import { env } from "@/lib/env";
 
 // App router includes @vercel/og.
@@ -10,8 +7,8 @@ import { env } from "@/lib/env";
 
 const fetchURL = env.FETCH_SELF_URL;
 
-export async function GET() {
-  const { hint, dayID } = getCurrentItem();
+export function GET() {
+  const { hint } = getCurrentItem();
 
   return new ImageResponse(
     (
@@ -32,20 +29,18 @@ export async function GET() {
           borderRadius: 23,
         }}
       >
-        {fetchURL && (
-          <img
-            style={{
-              width: 200,
-            }}
-            src={
-              fetchURL +
-              (hint.hint.toLowerCase().includes("jamaican")
-                ? "/assets/karl-jamaican.png"
-                : "/assets/karl.png")
-            }
-            alt=""
-          />
-        )}
+        <img
+          style={{
+            width: 200,
+          }}
+          src={
+            fetchURL +
+            (hint.hint.toLowerCase().includes("jamaican")
+              ? "/assets/karl-jamaican.png"
+              : "/assets/karl.png")
+          }
+          alt=""
+        />
         <p
           style={{
             fontWeight: 700,

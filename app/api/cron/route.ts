@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 
-export async function GET() {
+export function GET() {
   try {
     revalidatePath("/", "layout");
     return Response.json({ message: "success", status: 200 });

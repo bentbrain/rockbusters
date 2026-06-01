@@ -34,7 +34,7 @@ const CountdownTimer = ({ serverTime }: { serverTime: string }) => {
         const seconds = Math.floor((timeLeft / 1000) % 60);
 
         if (hours === 0 && minutes === 0 && seconds == 0) {
-          revalidateGame();
+          void revalidateGame();
           router.refresh();
         }
 
