@@ -1,9 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { trackResultsCopied } from "@/lib/analytics";
 import { CircleCheckBig, Copy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-function CopyButton({ text, id }: Readonly<{ text: string; id: number }>) {
+function CopyButton({
+  guessCount,
+  result,
+  text,
+  id,
+}: Readonly<{
+  guessCount: number;
+  id: number;
+  result: "lost" | "won";
+  text: string;
+}>) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -12,6 +23,12 @@ function CopyButton({ text, id }: Readonly<{ text: string; id: number }>) {
 
 ${text}
 https://rockbusters.lol/`);
+      trackResultsCopied({
+        dayId: id,
+        guessCount,
+        progress: text,
+        result,
+      });
       setIsCopied(true);
       toast.success("Results copied");
       setTimeout(() => {

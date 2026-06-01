@@ -19,6 +19,7 @@ import {
 import { useMediaQuery } from "@/hooks/use-media-query";
 import type { Stats } from "@/hooks/use-statistics";
 import { useStatistics } from "@/hooks/use-statistics";
+import { trackPanelOpened } from "@/lib/analytics";
 import { CalculatePercentage, TransformOldStats, cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -33,10 +34,16 @@ export function StatisticDisplay({
   const [open, setOpen] = React.useState(false);
   const [stats] = useStatistics();
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const setTrackedOpen = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (nextOpen) {
+      trackPanelOpened({ panel: "statistics", trigger: displayType });
+    }
+  };
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setTrackedOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
@@ -62,7 +69,7 @@ export function StatisticDisplay({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={setTrackedOpen}>
       <DrawerTrigger asChild>
         <Button
           variant="outline"
