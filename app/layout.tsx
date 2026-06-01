@@ -38,7 +38,7 @@ export default function RootLayout({
   const currentTime = new Date().toUTCString();
   const { hint } = getCurrentItem();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <CSPostHogProvider>
         <body
           className={`${GeistSans.className} bg-secondary dark:bg-background`}
@@ -49,9 +49,9 @@ export default function RootLayout({
             disableTransitionOnChange
             enableSystem
           >
-            <div className=" min-h-dvh grid grid-rows-[auto,1fr,auto]">
-              <header className=" bg-background grid-cols-2 md:grid-cols-[200px,1fr,200px] dark:bg-slate-900 p-4 grid items-center mb-6">
-                <div className="md:col-start-2 gap-2 flex md:justify-center items-center">
+            <div className="min-h-dvh grid grid-rows-[auto_1fr_auto]">
+              <header className="bg-background dark:bg-slate-900 p-4 grid w-dvw items-center mb-6 grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[1fr_auto_1fr]">
+                <div className="col-start-1 md:col-start-2 min-w-0 gap-2 flex items-center md:justify-center">
                   <Image
                     src={
                       hint.hint.toLowerCase().includes("jamaican")
@@ -64,7 +64,7 @@ export default function RootLayout({
                   />
                   <h1 className="font-bold text-lg">Rockbusters</h1>
                 </div>
-                <div className="flex items-center justify-end gap-2 w-full">
+                <div className="col-start-2 md:col-start-3 flex shrink-0 items-center justify-end gap-2">
                   <InformationDisplay />
                   <StatisticDisplay displayType="icon" />
                   <ModeToggle className="" />

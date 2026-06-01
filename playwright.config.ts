@@ -14,10 +14,6 @@ export default defineConfig({
     command: `pnpm dev --hostname 127.0.0.1 --port ${port}`,
     env: {
       FETCH_SELF_URL: `http://127.0.0.1:${port}`,
-      KV_REST_API_READ_ONLY_TOKEN: "test-read-token",
-      KV_REST_API_TOKEN: "test-token",
-      KV_REST_API_URL: "https://example.com",
-      KV_URL: "https://example.com",
       NEXT_PUBLIC_POSTHOG_HOST: "https://example.com",
       NEXT_PUBLIC_POSTHOG_KEY: "test-posthog-key",
     },
