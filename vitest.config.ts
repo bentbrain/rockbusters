@@ -14,6 +14,8 @@ export default defineConfig({
       reporter: ["text", "json", "html"],
     },
     environment: "jsdom",
+    exclude: ["**/node_modules/**", "tests/e2e/**", "tests/components/**"],
     globals: true,
+    include: ["app/**/*.test.ts", "lib/**/*.test.ts"],
   },
 });
