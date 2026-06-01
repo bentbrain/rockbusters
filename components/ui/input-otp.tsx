@@ -64,7 +64,7 @@ const DummyInputOTPSlot = React.forwardRef<
     index: number;
     children: React.ReactNode;
   }
->(({ index, className, children, ...props }, ref) => {
+>(({ className, children, ...props }, ref) => {
   return (
     <div
       ref={ref}

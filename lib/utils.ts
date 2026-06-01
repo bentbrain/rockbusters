@@ -1,9 +1,10 @@
-import { clsx, type ClassValue } from "clsx";
+import { clsx } from "clsx";
+import type { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { questions } from "./questions";
 import { startingDate } from "./config";
-import { Guess } from "@/components/ui/guesser";
-import { Stats } from "@/hooks/use-statistics";
+import type { Guess } from "@/components/ui/guesser";
+import type { Stats } from "@/hooks/use-statistics";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -14,7 +15,7 @@ export const REGEXP_ALL_CHARACTERS = "^[^\\s]+$";
 export function ConcealAnswer(answer: string) {
   const maskedAnswer = answer.replace(
     /\b(\w)(\w*)/g,
-    (match, firstLetter, rest) => {
+    (_match: string, firstLetter: string, rest: string) => {
       return firstLetter + rest.replace(/\w/g, "#");
     },
   );
@@ -64,7 +65,7 @@ export function CheckAnswer(
 ) {
   const updatedAnswer = mergeProgress(
     currentProgress,
-    UpdateAnswer(guess || "", answer),
+    UpdateAnswer(guess, answer),
   );
   const sanitizedGuess = updatedAnswer.toLowerCase().replaceAll(" ", "");
   const sanitizedAnswer = answer.toLowerCase().replaceAll(" ", "");
@@ -150,7 +151,7 @@ export function CalculateGuesses(state: Guess[], guesses: Stats["guesses"]) {
 }
 
 export function TransformOldStats(score: number) {
-  const newFormat: { [key: number]: string } = {
+  const newFormat: Record<number, string> = {
     5: "💔💔💔💔💚",
     4: "💔💔💔💚💚",
     3: "💔💔💚💚💚",

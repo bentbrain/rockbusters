@@ -11,13 +11,13 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
 const absoluteURL = env.FETCH_SELF_URL;
 
-export async function generateMetadata(): Promise<Metadata> {
+export function generateMetadata(): Metadata {
   const { dayID } = getCurrentItem();
   return {
     metadataBase: new URL(absoluteURL),

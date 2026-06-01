@@ -5,7 +5,8 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ALL_CHARACTERS } from "@/lib/utils";
-import { Fragment, RefObject, useState } from "react";
+import type { RefObject} from "react";
+import { Fragment, useState } from "react";
 
 const GuessInput = ({
   answer,
@@ -29,7 +30,7 @@ const GuessInput = ({
   let globalIndex = 0;
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={() => {
         setCurrentGuess("");
       }}
       className="grid place-items-center gap-8 uppercase"
@@ -51,7 +52,7 @@ const GuessInput = ({
           {words.map((word, i) => (
             <Fragment key={`group-${i}`}>
               <InputOTPGroup className="flex">
-                {word.split("").map((letter, j) => (
+                {word.split("").map((letter) => (
                   <InputOTPSlot
                     key={`${letter}-${globalIndex}`}
                     index={globalIndex++}

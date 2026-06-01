@@ -17,7 +17,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Stats, useStatistics } from "@/hooks/use-statistics";
+import type { Stats } from "@/hooks/use-statistics";
+import { useStatistics } from "@/hooks/use-statistics";
 import { CalculatePercentage, TransformOldStats, cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -30,7 +31,7 @@ export function StatisticDisplay({
   displayType: "icon" | "text";
 }) {
   const [open, setOpen] = React.useState(false);
-  const [stats, setStats] = useStatistics();
+  const [stats] = useStatistics();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
@@ -115,7 +116,7 @@ const DistBar = ({
   useEffect(() => {
     const timer = setTimeout(() => setPercentage(calcPercent), 50 * index);
     return () => clearTimeout(timer);
-  }, []);
+  }, [calcPercent, index]);
 
   return (
     <div className="grid grid-cols-[12ch,1fr] items-center font-medium">
