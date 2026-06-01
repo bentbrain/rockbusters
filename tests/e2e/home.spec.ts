@@ -2,6 +2,8 @@ import { expect, test } from "@playwright/test";
 
 test("renders the daily Rockbusters game", async ({ page }) => {
   await page.goto("/");
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
 
   await expect(
     page.getByRole("heading", { name: "Rockbusters" })
@@ -31,6 +33,7 @@ test("submits a guess without leaving the page", async ({ page }) => {
 
   await expect(page).toHaveURL("/");
   await expect(page.getByText("💔💚💚💚💚")).toBeVisible();
+  await expect(page.getByTestId("previous-guesses")).toBeVisible();
   await expect(answerInput).toHaveValue("");
   await expect(submitButton).toBeDisabled();
 

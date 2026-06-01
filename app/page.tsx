@@ -6,11 +6,13 @@ import {
 } from "@/lib/seo";
 import { ConcealAnswer, getCurrentItem } from "@/lib/utils";
 import Guesser from "../components/ui/guesser";
+import { env } from "@/lib/env";
 
 export const dynamic = "auto";
 
 export default function Home() {
   const { hint, dayID } = getCurrentItem();
+  const forceShowPreviousGuesses = env.VERCEL_ENV === "preview";
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -40,6 +42,7 @@ export default function Home() {
           <Guesser
             key={`guesser-${dayID}`}
             id={dayID}
+            forceShowPreviousGuesses={forceShowPreviousGuesses}
             hint={hint.hint}
             answer={ConcealAnswer(hint.answer)}
             targetAnswer={hint.answer}

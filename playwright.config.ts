@@ -16,6 +16,7 @@ export default defineConfig({
       FETCH_SELF_URL: `http://127.0.0.1:${port}`,
       NEXT_PUBLIC_POSTHOG_HOST: "https://example.com",
       NEXT_PUBLIC_POSTHOG_KEY: "test-posthog-key",
+      VERCEL_ENV: "preview",
     },
     reuseExistingServer: false,
     timeout: 120_000,

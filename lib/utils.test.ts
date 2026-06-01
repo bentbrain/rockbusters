@@ -111,18 +111,21 @@ describe("Utility Functions", () => {
         isCorrect: false,
         guessNumber: 0,
         progress: "h####",
+        submittedAnswer: "",
       },
       {
         updatedAnswer: "h####",
         isCorrect: false,
         guessNumber: 1,
         progress: "h####",
+        submittedAnswer: "hellz",
       },
       {
         updatedAnswer: "h####",
         isCorrect: true,
         guessNumber: 2,
         progress: "hello",
+        submittedAnswer: "hello",
       },
     ];
     const guesses = { "0": 0, "1": 0, "2": 0 };
@@ -136,12 +139,14 @@ describe("Utility Functions", () => {
         isCorrect: false,
         guessNumber: 0,
         progress: "💚💚💚💚💚",
+        submittedAnswer: "",
       },
       {
         updatedAnswer: "he###",
         isCorrect: false,
         guessNumber: 1,
         progress: "💔💚💚💚💚",
+        submittedAnswer: "hezzy",
       },
     ];
     const guesses = { "0": 2, "1": 1 };

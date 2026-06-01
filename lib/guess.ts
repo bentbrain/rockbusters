@@ -6,6 +6,7 @@ export interface Guess {
   isCorrect: boolean;
   guessNumber: number;
   progress: string;
+  submittedAnswer: string;
 }
 
 interface ProcessGuessInput {
@@ -22,6 +23,7 @@ export function createInitialGuess(answer: string): Guess {
     isCorrect: false,
     guessNumber: 0,
     progress: "💚".repeat(maxGuesses),
+    submittedAnswer: "",
   };
 }
 
@@ -52,5 +54,6 @@ export function processGuess({
     updatedAnswer: guessNumber === maxGuesses - 1 ? answer : updatedAnswer,
     guessNumber: guessNumber + 1,
     progress,
+    submittedAnswer: guess,
   };
 }

@@ -1,34 +1,10 @@
 // app/providers.js
 "use client";
+import { disableAnalytics, initializeAnalytics } from "@/lib/analytics";
 import { env } from "@/lib/env";
-import { setAnalyticsEnabled } from "@/lib/analytics";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
+import { useEffect } from "react";
 
 const posthogApiPath = "/ingest";
-let hasInitializedPostHog = false;
-
-function initializePostHog() {
-  if (hasInitializedPostHog) return;
-  if (typeof window === "undefined") return;
-
-  posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: posthogApiPath,
-    capture_dead_clicks: true,
-    capture_exceptions: {
-      capture_console_errors: true,
-      capture_unhandled_errors: true,
-      capture_unhandled_rejections: true,
-    },
-    capture_performance: {
-      network_timing: true,
-      web_vitals: true,
-    },
-    person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
-  });
-
-  hasInitializedPostHog = true;
-}
 
 export function CSPostHogProvider({
   children,
@@ -37,13 +13,27 @@ export function CSPostHogProvider({
   children: React.ReactNode;
   enabled: boolean;
 }) {
-  setAnalyticsEnabled(enabled);
+  useEffect(() => {
+    if (!enabled) {
+      disableAnalytics();
+      return;
+    }
 
-  if (!enabled) {
-    return children;
-  }
+    void initializeAnalytics(env.NEXT_PUBLIC_POSTHOG_KEY, {
+      api_host: posthogApiPath,
+      capture_dead_clicks: true,
+      capture_exceptions: {
+        capture_console_errors: true,
+        capture_unhandled_errors: true,
+        capture_unhandled_rejections: true,
+      },
+      capture_performance: {
+        network_timing: true,
+        web_vitals: true,
+      },
+      person_profiles: "identified_only",
+    });
+  }, [enabled]);
 
-  initializePostHog();
-
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+  return children;
 }
