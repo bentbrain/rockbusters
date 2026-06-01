@@ -6,12 +6,19 @@ import { InformationDisplay } from "@/components/ui/information-display";
 import { Toaster } from "@/components/ui/sonner";
 import { StatisticDisplay } from "@/components/ui/statistic-display";
 import { env } from "@/lib/env";
+import {
+  defaultOgImageAlt,
+  getKarlImagePath,
+  siteDescription,
+  siteName,
+  siteTitle,
+} from "@/lib/seo";
 import { getCurrentItem } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
@@ -19,14 +26,51 @@ const absoluteURL = env.FETCH_SELF_URL;
 
 export function generateMetadata(): Metadata {
   const { dayID } = getCurrentItem();
+  const ogImage = `/og?${dayID}`;
+
   return {
     metadataBase: new URL(absoluteURL),
-    title: "Rockbusters",
-    description:
-      "Guess the band or artist in 5 tries. A new clue is available every day.",
-    openGraph: {
-      images: [`/og?${dayID}`],
+    applicationName: siteName,
+    title: {
+      default: siteTitle,
+      template: `%s | ${siteName}`,
     },
+    description: siteDescription,
+    alternates: {
+      canonical: "/",
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: "/",
+      siteName,
+      title: siteTitle,
+      description: siteDescription,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: defaultOgImageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteDescription,
+      images: [
+        {
+          url: ogImage,
+          alt: defaultOgImageAlt,
+        },
+      ],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    category: "game",
   };
 }
 
@@ -53,12 +97,8 @@ export default function RootLayout({
               <header className="bg-background dark:bg-slate-900 p-4 grid w-dvw items-center mb-6 grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[1fr_auto_1fr]">
                 <div className="col-start-1 md:col-start-2 min-w-0 gap-2 flex items-center md:justify-center">
                   <Image
-                    src={
-                      hint.hint.toLowerCase().includes("jamaican")
-                        ? "/assets/karl-jamaican.png"
-                        : "/assets/karl.png"
-                    }
-                    alt="Text"
+                    src={getKarlImagePath(hint.hint)}
+                    alt="Rockbusters logo"
                     width={30}
                     height={30}
                   />

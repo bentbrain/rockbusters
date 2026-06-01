@@ -1,11 +1,9 @@
+import { getAbsoluteUrl, getKarlImagePath } from "@/lib/seo";
 import { getCurrentItem } from "@/lib/utils";
 import { ImageResponse } from "next/og";
-import { env } from "@/lib/env";
 
 // App router includes @vercel/og.
 // No need to install it.
-
-const fetchURL = env.FETCH_SELF_URL;
 
 export function GET() {
   const { hint } = getCurrentItem();
@@ -33,13 +31,8 @@ export function GET() {
           style={{
             width: 200,
           }}
-          src={
-            fetchURL +
-            (hint.hint.toLowerCase().includes("jamaican")
-              ? "/assets/karl-jamaican.png"
-              : "/assets/karl.png")
-          }
-          alt=""
+          src={getAbsoluteUrl(getKarlImagePath(hint.hint))}
+          alt="Rockbusters logo"
         />
         <p
           style={{
