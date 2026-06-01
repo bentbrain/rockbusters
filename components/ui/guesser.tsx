@@ -1,11 +1,15 @@
 "use client";
 import { maxGuesses } from "@/lib/config";
-import { useActionState, useEffect, useRef } from "react";
+import {
+  createInitialGuess,
+  processGuess,
+} from "@/lib/guess";
+import type { Guess } from "@/lib/guess";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import useLocalStorageState from "use-local-storage-state";
-import { SubmitAnswer } from "../../app/actions";
 import AnswerDisplay from "./answer-display";
 import CopyButton from "./copy-button";
-import GuessInput from "./guess-input";
+import GuessInput, { GuessInputSkeleton } from "./guess-input";
 import { Card } from "./card";
 import { useStatistics } from "@/hooks/use-statistics";
 import { StatisticDisplay } from "./statistic-display";
@@ -15,36 +19,26 @@ interface Props {
   answer: string;
   hint: string;
   id: number;
+  targetAnswer: string;
 }
 
-export interface Guess {
-  updatedAnswer: string;
-  isCorrect: boolean;
-  guessNumber: number;
-  progress: string;
+function subscribeToHydration() {
+  return () => undefined;
 }
 
-function Guesser({ answer, hint, id }: Readonly<Props>) {
-  const initialState: Guess = {
-    updatedAnswer: answer,
-    isCorrect: false,
-    guessNumber: 0,
-    progress: "💚".repeat(maxGuesses),
-  };
-  const [state, formAction, isPending] = useActionState(
-    SubmitAnswer,
-    initialState
-  );
+function getHydratedSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function Guesser({ answer, hint, id, targetAnswer }: Readonly<Props>) {
+  const initialState = createInitialGuess(answer);
   const [answers, setAnswers, { removeItem: removeAnswers }] =
     useLocalStorageState<Guess[]>("rockbusters_todays_answers", {
-      defaultValue: [
-        {
-          updatedAnswer: answer,
-          isCorrect: false,
-          guessNumber: 0,
-          progress: "💚".repeat(maxGuesses),
-        },
-      ],
+      defaultValue: [initialState],
     });
   const [currentGame, setCurrentGame] = useLocalStorageState<number>(
     "rockbusters_game_id",
@@ -58,10 +52,54 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
   const gameOver =
     currentGuesses.length === maxGuesses && !latestGuess?.isCorrect;
   const gameWon = latestGuess?.isCorrect;
+  const hasHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getHydratedSnapshot,
+    getServerSnapshot,
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const submitGuess = (guess: string) => {
+    if (gameOver || gameWon) return;
+
+    const nextGuess = processGuess({
+      guess,
+      answer: targetAnswer,
+      answerProgress: latestGuess?.updatedAnswer ?? answer,
+      currentProgress: latestGuess?.progress ?? initialState.progress,
+      guessNumber: latestGuess?.guessNumber ?? initialState.guessNumber,
+    });
+    const nextAnswers = [...answers, nextGuess];
+    const nextGuesses = nextAnswers.filter((answer) => answer.guessNumber != 0);
+    const nextGameOver =
+      nextGuesses.length === maxGuesses && !nextGuess.isCorrect;
+
+    setAnswers(nextAnswers);
+
+    if (nextGameOver) {
+      setStats((prev) => ({
+        currentStreak: 0,
+        maxStreak: prev.maxStreak,
+        played: prev.played + 1,
+        wins: prev.wins,
+        guesses: CalculateGuesses(nextAnswers, prev.guesses),
+      }));
+    }
+
+    if (nextGuess.isCorrect) {
+      setStats((prev) => ({
+        currentStreak: prev.currentStreak + 1,
+        maxStreak: prev.maxStreak + 1,
+        played: prev.played + 1,
+        wins: prev.wins + 1,
+        guesses: CalculateGuesses(nextAnswers, prev.guesses),
+      }));
+    }
+  };
+
   useEffect(() => {
+    if (!hasHydrated) return;
     if (currentGame === id) return;
     setCurrentGame((prev) => {
       if (prev !== id) {
@@ -69,51 +107,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
       }
       return id;
     });
-  }, [id, currentGame, removeAnswers, setCurrentGame]);
-
-  useEffect(() => {
-    if (state.guessNumber === 0) return;
-    if (gameOver || gameWon) return;
-    const { updatedAnswer, isCorrect, guessNumber, progress } = state;
-    if (!updatedAnswer) return;
-    setAnswers((prev) => [
-      ...prev,
-      {
-        updatedAnswer,
-        isCorrect,
-        guessNumber,
-        progress,
-      },
-    ]);
-  }, [gameOver, gameWon, setAnswers, state]);
-
-  useEffect(() => {
-    if (state.guessNumber === 0) return;
-
-    if (gameOver) {
-      setStats((prev) => {
-        return {
-          currentStreak: 0,
-          maxStreak: prev.maxStreak,
-          played: prev.played + 1,
-          wins: prev.wins,
-          guesses: CalculateGuesses(answers, prev.guesses),
-        };
-      });
-    }
-
-    if (gameWon) {
-      setStats((prev) => {
-        return {
-          currentStreak: prev.currentStreak + 1,
-          maxStreak: prev.maxStreak + 1,
-          played: prev.played + 1,
-          wins: prev.wins + 1,
-          guesses: CalculateGuesses(answers, prev.guesses),
-        };
-      });
-    }
-  }, [answers, gameOver, gameWon, setStats, state.guessNumber]);
+  }, [id, currentGame, hasHydrated, removeAnswers, setCurrentGame]);
 
   return (
     <div className="grid  gap-4">
@@ -124,7 +118,7 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
         </p>
       </Card>
 
-      <Card className="px-3  py-4">
+      <Card aria-busy={!hasHydrated} className="px-3 py-4">
         <div className="grid gap-4">
           <div
             className={cn(
@@ -142,31 +136,29 @@ function Guesser({ answer, hint, id }: Readonly<Props>) {
                   latestGuess?.progress.includes("💔".repeat(maxGuesses - 1)) &&
                   !gameOver &&
                   !gameWon,
+                "opacity-70": !hasHydrated,
               }
             )}
           >
-            {latestGuess?.progress}
+            {hasHydrated ? latestGuess?.progress : initialState.progress}
           </div>
           <AnswerDisplay
             isIncorrect={gameOver}
-            isPending={isPending}
+            isPending={false}
             inputRef={inputRef}
             answer={
-              latestGuess?.guessNumber === 0
+              !hasHydrated || latestGuess?.guessNumber === 0
                 ? answer
                 : latestGuess?.updatedAnswer ?? answer
             }
           />
-          {!gameOver && !gameWon && (
+          {!hasHydrated && <GuessInputSkeleton answer={answer} />}
+          {hasHydrated && !gameOver && !gameWon && (
             <GuessInput
               key={answer}
               ref={inputRef}
-              isPending={isPending}
               answer={answer}
-              formAction={formAction}
-              answerProgress={latestGuess?.updatedAnswer ?? ""}
-              currentProgress={latestGuess?.progress ?? initialState.progress}
-              guessNumber={latestGuess?.guessNumber ?? initialState.guessNumber}
+              onSubmitGuess={submitGuess}
             />
           )}
         </div>

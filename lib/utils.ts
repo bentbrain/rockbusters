@@ -3,7 +3,7 @@ import type { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { questions } from "./questions";
 import { startingDate } from "./config";
-import type { Guess } from "@/components/ui/guesser";
+import type { Guess } from "@/lib/guess";
 import type { Stats } from "@/hooks/use-statistics";
 
 export function cn(...inputs: ClassValue[]) {

@@ -5,6 +5,7 @@ import { ModeToggle } from "@/components/ui/dark-mode-toggle";
 import { InformationDisplay } from "@/components/ui/information-display";
 import { Toaster } from "@/components/ui/sonner";
 import { StatisticDisplay } from "@/components/ui/statistic-display";
+import { getTimeLeft } from "@/lib/countdown";
 import { env } from "@/lib/env";
 import {
   defaultOgImageAlt,
@@ -80,6 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const currentTime = new Date().toUTCString();
+  const initialTimeLeft = getTimeLeft(currentTime);
   const { hint } = getCurrentItem();
   return (
     <html lang="en" suppressHydrationWarning>
@@ -112,7 +114,10 @@ export default function RootLayout({
               </header>
               {children}
               <div className="text-center px-3 py-4 grid place-items-center gap-3">
-                <CountdownTimer serverTime={currentTime} />
+                <CountdownTimer
+                  initialTimeLeft={initialTimeLeft}
+                  serverTime={currentTime}
+                />
                 <p className="font-mono text-xs text-muted-foreground">
                   (built by{" "}
                   <a

@@ -1,40 +1,39 @@
 import { Button } from "@/components/ui/button";
 import {
+  DummyInputOTPSlot,
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ALL_CHARACTERS } from "@/lib/utils";
-import type { RefObject} from "react";
+import type { FormEvent, RefObject } from "react";
 import { Fragment, useState } from "react";
 
 const GuessInput = ({
   answer,
-  formAction,
-  answerProgress,
-  currentProgress,
-  guessNumber,
-  isPending,
+  onSubmitGuess,
   ref,
 }: Readonly<{
   answer: string;
-  formAction: (payload: FormData) => void;
-  answerProgress: string;
-  currentProgress: string;
-  guessNumber: number;
-  isPending: boolean;
+  onSubmitGuess: (guess: string) => void;
   ref: RefObject<HTMLInputElement | null>;
 }>) => {
   const [currentGuess, setCurrentGuess] = useState("");
   const words = answer.split(" ");
   let globalIndex = 0;
+  const isComplete = currentGuess.length === answer.replaceAll(" ", "").length;
+  const submitGuess = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!isComplete) return;
+
+    onSubmitGuess(currentGuess);
+    setCurrentGuess("");
+  };
+
   return (
     <form
-      onSubmit={() => {
-        setCurrentGuess("");
-      }}
+      onSubmit={submitGuess}
       className="grid place-items-center gap-8 uppercase"
-      action={formAction}
     >
       <InputOTP
         name="answer"
@@ -64,41 +63,42 @@ const GuessInput = ({
           ))}
         </div>
       </InputOTP>
-      <input
-        type="text"
-        hidden
-        readOnly
-        value={answerProgress}
-        className="hidden"
-        name="answer-progress"
-      />
-      <input
-        type="text"
-        hidden
-        readOnly
-        value={currentProgress}
-        className="hidden"
-        name="current-progress"
-      />
-      <input
-        type="text"
-        hidden
-        readOnly
-        value={guessNumber}
-        className="hidden"
-        name="guess-number"
-      />
-      <Button
-        disabled={
-          currentGuess.length != answer.replaceAll(" ", "").length || isPending
-        }
-      >
-        Submit
-      </Button>
+      <Button disabled={!isComplete}>Submit</Button>
     </form>
   );
 };
 
 GuessInput.displayName = "GuessInput";
+
+export function GuessInputSkeleton({ answer }: Readonly<{ answer: string }>) {
+  const words = answer.split(" ");
+  let globalIndex = 0;
+
+  return (
+    <div
+      aria-hidden="true"
+      className="grid place-items-center gap-8 uppercase"
+    >
+      <div className="flex flex-wrap justify-center items-center gap-2">
+        {words.map((word, i) => (
+          <Fragment key={`skeleton-group-${i}`}>
+            <InputOTPGroup className="flex">
+              {word.split("").map((letter) => (
+                <DummyInputOTPSlot
+                  key={`skeleton-${letter}-${globalIndex}`}
+                  index={globalIndex++}
+                  className="bg-slate-50 dark:bg-blue-950"
+                >
+                  {" "}
+                </DummyInputOTPSlot>
+              ))}
+            </InputOTPGroup>
+          </Fragment>
+        ))}
+      </div>
+      <Button disabled>Submit</Button>
+    </div>
+  );
+}
 
 export default GuessInput;
