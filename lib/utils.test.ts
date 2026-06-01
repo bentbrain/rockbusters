@@ -11,11 +11,15 @@ import {
   CalculateGuesses,
 } from "./utils";
 
-jest.mock("./questions", () => ({
+vi.mock("./questions", () => ({
   questions: ["question1", "question2", "question3"],
 }));
 
 describe("Utility Functions", () => {
+  beforeEach(() => {
+    vi.useRealTimers();
+  });
+
   test("cn merges class names correctly", () => {
     expect(cn("class1", "class2")).toBe("class1 class2");
   });
@@ -52,13 +56,13 @@ describe("Utility Functions", () => {
     );
   });
   test("getDayCount returns the correct number of days since starting date", () => {
-    const mockDate = new Date("2024-06-11");
-    jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2024-06-11T00:00:00.000Z"));
     expect(getDayCount()).toBe(1);
   });
   test("getCurrentItem returns the current item correctly", () => {
-    const mockDate = new Date("2024-06-11");
-    jest.spyOn(global, "Date").mockImplementation(() => mockDate);
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2024-06-11T00:00:00.000Z"));
     const result = getCurrentItem();
     expect(result.hint).toBe("question2");
     expect(result.dayID).toBe(526);
