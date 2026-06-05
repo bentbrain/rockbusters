@@ -102,6 +102,7 @@ export function getCurrentItem() {
   return {
     hint: questions[cycleDay],
     dayID: dayCount,
+    questionIndex: cycleDay,
   };
 }
 

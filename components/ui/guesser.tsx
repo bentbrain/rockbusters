@@ -22,8 +22,31 @@ interface Props {
   answer: string;
   hint: string;
   id: number;
+  questionAudio?: {
+    answerUrl: string;
+    questionUrl: string;
+  };
   showPreviousGuesses: boolean;
   targetAnswer: string;
+}
+
+function QuestionAudioPlayer({
+  questionUrl,
+}: Readonly<{
+  questionUrl: string;
+}>) {
+  return (
+    <div className="grid gap-2 text-left">
+      <audio
+        className="w-full"
+        controls
+        preload="metadata"
+        src={questionUrl}
+      >
+        <a href={questionUrl}>Play question audio</a>
+      </audio>
+    </div>
+  );
 }
 
 function subscribeToHydration() {
@@ -46,6 +69,7 @@ function Guesser({
   answer,
   hint,
   id,
+  questionAudio,
   showPreviousGuesses,
   targetAnswer,
 }: Readonly<Props>) {
@@ -165,10 +189,18 @@ function Guesser({
   return (
     <div className="grid  gap-4">
       <Card className=" shadow-sm p-3">
-        <p className=" text-balance">
-          <span className="font-bold">#{id}: </span>
-          {hint}
-        </p>
+        <div className="grid gap-3">
+          <p className=" text-balance">
+            <span className="font-bold">#{id}: </span>
+            {hint}
+          </p>
+          {questionAudio && (
+            <QuestionAudioPlayer
+              key={questionAudio.questionUrl}
+              questionUrl={questionAudio.questionUrl}
+            />
+          )}
+        </div>
       </Card>
 
       <Card aria-busy={!hasHydrated} className="px-3 py-4">
@@ -210,6 +242,16 @@ function Guesser({
                 : latestGuess?.updatedAnswer ?? answer
             }
           />
+          {Boolean(gameOver || gameWon) && questionAudio && (
+            <audio
+              className="mx-auto w-full max-w-sm"
+              controls
+              preload="metadata"
+              src={questionAudio.answerUrl}
+            >
+              <a href={questionAudio.answerUrl}>Play answer audio</a>
+            </audio>
+          )}
           {!hasHydrated && <GuessInputSkeleton answer={answer} />}
           {hasHydrated && !gameOver && !gameWon && (
             <GuessInput
