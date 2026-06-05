@@ -9,7 +9,7 @@ import { maxGuesses } from "@/lib/config";
 import { createInitialGuess, processGuess } from "@/lib/guess";
 import type { Guess } from "@/lib/guess";
 import { CalculateGuesses, cn } from "@/lib/utils";
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import AnswerDisplay from "./answer-display";
 import { Card } from "./card";
@@ -22,8 +22,57 @@ interface Props {
   answer: string;
   hint: string;
   id: number;
+  questionAudio?: {
+    answerUrl?: string;
+    questionUrl: string;
+  };
   showPreviousGuesses: boolean;
   targetAnswer: string;
+}
+
+function QuestionAudioPlayer({
+  answer,
+  answerUrl,
+  questionUrl,
+}: Readonly<{
+  answer: string;
+  answerUrl?: string;
+  questionUrl: string;
+}>) {
+  const [hasFinishedQuestionAudio, setHasFinishedQuestionAudio] =
+    useState(false);
+
+  return (
+    <div className="grid gap-2 text-left">
+      <audio
+        className="w-full"
+        controls
+        onEnded={() => setHasFinishedQuestionAudio(true)}
+        preload="metadata"
+        src={questionUrl}
+      >
+        <a href={questionUrl}>Play question audio</a>
+      </audio>
+      {hasFinishedQuestionAudio && (
+        <div className="grid gap-2 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-center text-sm dark:border-emerald-900 dark:bg-emerald-950">
+          <p>
+            <span className="font-bold">Answer: </span>
+            {answer}
+          </p>
+          {answerUrl && (
+            <audio
+              className="w-full"
+              controls
+              preload="metadata"
+              src={answerUrl}
+            >
+              <a href={answerUrl}>Play answer audio</a>
+            </audio>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function subscribeToHydration() {
@@ -46,6 +95,7 @@ function Guesser({
   answer,
   hint,
   id,
+  questionAudio,
   showPreviousGuesses,
   targetAnswer,
 }: Readonly<Props>) {
@@ -165,10 +215,20 @@ function Guesser({
   return (
     <div className="grid  gap-4">
       <Card className=" shadow-sm p-3">
-        <p className=" text-balance">
-          <span className="font-bold">#{id}: </span>
-          {hint}
-        </p>
+        <div className="grid gap-3">
+          <p className=" text-balance">
+            <span className="font-bold">#{id}: </span>
+            {hint}
+          </p>
+          {questionAudio && (
+            <QuestionAudioPlayer
+              key={questionAudio.questionUrl}
+              answer={targetAnswer}
+              answerUrl={questionAudio.answerUrl}
+              questionUrl={questionAudio.questionUrl}
+            />
+          )}
+        </div>
       </Card>
 
       <Card aria-busy={!hasHydrated} className="px-3 py-4">
