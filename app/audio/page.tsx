@@ -60,20 +60,14 @@ export default function AudioReviewPage() {
                     <span className="text-xs font-bold uppercase text-muted-foreground">
                       Answer
                     </span>
-                    {audio.answerUrl ? (
-                      <audio
-                        className="w-full"
-                        controls
-                        preload="metadata"
-                        src={audio.answerUrl}
-                      >
-                        <a href={audio.answerUrl}>Play answer audio</a>
-                      </audio>
-                    ) : (
-                      <p className="rounded-md border border-dashed px-3 py-2 text-sm text-muted-foreground">
-                        No answer clip available.
-                      </p>
-                    )}
+                    <audio
+                      className="w-full"
+                      controls
+                      preload="metadata"
+                      src={audio.answerUrl}
+                    >
+                      <a href={audio.answerUrl}>Play answer audio</a>
+                    </audio>
                   </div>
                 </div>
               </section>

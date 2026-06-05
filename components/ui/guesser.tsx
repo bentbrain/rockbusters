@@ -23,7 +23,7 @@ interface Props {
   hint: string;
   id: number;
   questionAudio?: {
-    answerUrl?: string;
+    answerUrl: string;
     questionUrl: string;
   };
   showPreviousGuesses: boolean;
@@ -37,7 +37,7 @@ function QuestionAudioPlayer({
   questionUrl,
 }: Readonly<{
   answer: string;
-  answerUrl?: string;
+  answerUrl: string;
   isAnswerRevealed: boolean;
   questionUrl: string;
 }>) {
@@ -57,16 +57,9 @@ function QuestionAudioPlayer({
             <span className="font-bold">Answer: </span>
             {answer}
           </p>
-          {answerUrl && (
-            <audio
-              className="w-full"
-              controls
-              preload="metadata"
-              src={answerUrl}
-            >
-              <a href={answerUrl}>Play answer audio</a>
-            </audio>
-          )}
+          <audio className="w-full" controls preload="metadata" src={answerUrl}>
+            <a href={answerUrl}>Play answer audio</a>
+          </audio>
         </div>
       )}
     </div>
