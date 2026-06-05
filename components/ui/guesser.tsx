@@ -9,7 +9,7 @@ import { maxGuesses } from "@/lib/config";
 import { createInitialGuess, processGuess } from "@/lib/guess";
 import type { Guess } from "@/lib/guess";
 import { CalculateGuesses, cn } from "@/lib/utils";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import AnswerDisplay from "./answer-display";
 import { Card } from "./card";
@@ -33,27 +33,25 @@ interface Props {
 function QuestionAudioPlayer({
   answer,
   answerUrl,
+  isAnswerRevealed,
   questionUrl,
 }: Readonly<{
   answer: string;
   answerUrl?: string;
+  isAnswerRevealed: boolean;
   questionUrl: string;
 }>) {
-  const [hasFinishedQuestionAudio, setHasFinishedQuestionAudio] =
-    useState(false);
-
   return (
     <div className="grid gap-2 text-left">
       <audio
         className="w-full"
         controls
-        onEnded={() => setHasFinishedQuestionAudio(true)}
         preload="metadata"
         src={questionUrl}
       >
         <a href={questionUrl}>Play question audio</a>
       </audio>
-      {hasFinishedQuestionAudio && (
+      {isAnswerRevealed && (
         <div className="grid gap-2 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-center text-sm dark:border-emerald-900 dark:bg-emerald-950">
           <p>
             <span className="font-bold">Answer: </span>
@@ -225,6 +223,7 @@ function Guesser({
               key={questionAudio.questionUrl}
               answer={targetAnswer}
               answerUrl={questionAudio.answerUrl}
+              isAnswerRevealed={Boolean(gameOver || gameWon)}
               questionUrl={questionAudio.questionUrl}
             />
           )}
