@@ -31,14 +31,8 @@ interface Props {
 }
 
 function QuestionAudioPlayer({
-  answer,
-  answerUrl,
-  isAnswerRevealed,
   questionUrl,
 }: Readonly<{
-  answer: string;
-  answerUrl: string;
-  isAnswerRevealed: boolean;
   questionUrl: string;
 }>) {
   return (
@@ -51,17 +45,6 @@ function QuestionAudioPlayer({
       >
         <a href={questionUrl}>Play question audio</a>
       </audio>
-      {isAnswerRevealed && (
-        <div className="grid gap-2 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-center text-sm dark:border-emerald-900 dark:bg-emerald-950">
-          <p>
-            <span className="font-bold">Answer: </span>
-            {answer}
-          </p>
-          <audio className="w-full" controls preload="metadata" src={answerUrl}>
-            <a href={answerUrl}>Play answer audio</a>
-          </audio>
-        </div>
-      )}
     </div>
   );
 }
@@ -214,9 +197,6 @@ function Guesser({
           {questionAudio && (
             <QuestionAudioPlayer
               key={questionAudio.questionUrl}
-              answer={targetAnswer}
-              answerUrl={questionAudio.answerUrl}
-              isAnswerRevealed={Boolean(gameOver || gameWon)}
               questionUrl={questionAudio.questionUrl}
             />
           )}
@@ -262,6 +242,16 @@ function Guesser({
                 : latestGuess?.updatedAnswer ?? answer
             }
           />
+          {Boolean(gameOver || gameWon) && questionAudio && (
+            <audio
+              className="mx-auto w-full max-w-sm"
+              controls
+              preload="metadata"
+              src={questionAudio.answerUrl}
+            >
+              <a href={questionAudio.answerUrl}>Play answer audio</a>
+            </audio>
+          )}
           {!hasHydrated && <GuessInputSkeleton answer={answer} />}
           {hasHydrated && !gameOver && !gameWon && (
             <GuessInput
