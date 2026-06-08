@@ -23,7 +23,6 @@ interface Props {
   hint: string;
   id: number;
   questionAudio?: {
-    answerUrl: string;
     questionUrl: string;
   };
   showPreviousGuesses: boolean;
@@ -247,9 +246,9 @@ function Guesser({
               className="mx-auto w-full max-w-sm"
               controls
               preload="metadata"
-              src={questionAudio.answerUrl}
+              src="/api/audio/answer"
             >
-              <a href={questionAudio.answerUrl}>Play answer audio</a>
+              Play answer audio
             </audio>
           )}
           {!hasHydrated && <GuessInputSkeleton answer={answer} />}
