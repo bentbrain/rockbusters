@@ -246,7 +246,7 @@ function Guesser({
               className="mx-auto w-full max-w-sm"
               controls
               preload="metadata"
-              src="/api/audio/answer"
+              src={`/api/audio/answer/${id}`}
             >
               Play answer audio
             </audio>
