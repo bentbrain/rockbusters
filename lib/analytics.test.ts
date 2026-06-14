@@ -14,6 +14,7 @@ describe("analytics event filtering", () => {
           },
         ],
       },
+      uuid: "stackless-safari-load-failure",
     };
 
     expect(filterBrowserLoadFailureExceptions(event)).toBeNull();
@@ -34,6 +35,7 @@ describe("analytics event filtering", () => {
           },
         ],
       },
+      uuid: "safari-load-failure-with-stack",
     };
 
     expect(filterBrowserLoadFailureExceptions(event)).toBe(event);
@@ -51,6 +53,7 @@ describe("analytics event filtering", () => {
           },
         ],
       },
+      uuid: "chrome-load-failure",
     };
 
     expect(filterBrowserLoadFailureExceptions(event)).toBe(event);
