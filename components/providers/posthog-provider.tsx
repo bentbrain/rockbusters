@@ -1,6 +1,10 @@
 // app/providers.js
 "use client";
-import { disableAnalytics, initializeAnalytics } from "@/lib/analytics";
+import {
+  disableAnalytics,
+  filterBrowserLoadFailureExceptions,
+  initializeAnalytics,
+} from "@/lib/analytics";
 import { env } from "@/lib/env";
 import { useEffect } from "react";
 
@@ -21,6 +25,7 @@ export function CSPostHogProvider({
 
     void initializeAnalytics(env.NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: posthogApiPath,
+      before_send: filterBrowserLoadFailureExceptions,
       capture_dead_clicks: true,
       capture_exceptions: {
         capture_console_errors: true,
