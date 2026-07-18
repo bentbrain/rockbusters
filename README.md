@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Rockbusters
 
-## Getting Started
+A daily music guessing game based on Karl Pilkington's cryptic clues from the
+XFM show. Each day presents one mangled clue and gives players five attempts to
+name the artist or band.
 
-First, run the development server:
+Play it at [rockbusters.lol](https://rockbusters.lol).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+## Features
+
+- A new Rockbusters clue each day
+- Tolerant answer matching and five guesses per round
+- Optional audio clues
+- Shareable results without answer spoilers
+- Responsive, installable web app
+- Product analytics through PostHog and performance monitoring through Vercel
+- Unit, component, and end-to-end test coverage
+
+## Stack
+
+- Next.js 16 and React 19
+- TypeScript and Tailwind CSS
+- Vitest and Testing Library
+- Playwright for component and end-to-end tests
+- Vercel for hosting
+
+## Local development
+
+Install dependencies and start the development server:
+
+```sh
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with the required local configuration:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```dotenv
+FETCH_SELF_URL=http://localhost:3000
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_POSTHOG_KEY=your_posthog_project_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Audio clues can be enabled with `ROCKBUSTERS_AUDIO_BASE_URL` and
+`ROCKBUSTERS_AUDIO_TOKEN_SECRET`. They are optional for local development.
 
-## Learn More
+Open [localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+## Useful commands
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+pnpm lint       # lint the codebase
+pnpm test       # run unit tests
+pnpm test:ct    # run component tests
+pnpm test:e2e   # run browser tests
+pnpm build      # create a production build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## How the daily puzzle works
 
-## Deploy on Vercel
+The puzzle is selected from the question bank using the number of days since
+the configured launch date. This keeps the daily answer deterministic without
+requiring a database or scheduled job. Guesses and display preferences are
+stored in the browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Disclaimer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Rockbusters is an unofficial fan project. It is not affiliated with Karl
+Pilkington, XFM, Global, or any artists referenced by the clues.
