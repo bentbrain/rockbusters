@@ -1,10 +1,22 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { PostHog, PostHogConfig } from "posthog-js";
+import type { BeforeSendFn, PostHog, PostHogConfig } from "posthog-js";
 
 type CaptureProperties = Record<string, boolean | number | string>;
 type GameResult = "lost" | "won";
+
+interface ExceptionFrame {
+  filename?: unknown;
+}
+
+interface ExceptionEntry {
+  stacktrace?: {
+    frames?: ExceptionFrame[];
+  };
+  type?: unknown;
+  value?: unknown;
+}
 
 let isAnalyticsEnabled = false;
 let posthogClientPromise: Promise<PostHog> | null = null;
@@ -40,6 +52,45 @@ export function useAnalyticsEnabled() {
     getServerAnalyticsEnabledSnapshot,
   );
 }
+
+function isExceptionEntry(value: unknown): value is ExceptionEntry {
+  return typeof value === "object" && value !== null;
+}
+
+function hasStackFrames(exceptionList: ExceptionEntry[]) {
+  return exceptionList.some((exception) =>
+    exception.stacktrace?.frames?.some((frame) => frame.filename),
+  );
+}
+
+function getEventProperty(
+  properties: object | undefined,
+  key: string,
+): unknown {
+  if (!properties) return undefined;
+
+  return (properties as Record<string, unknown>)[key];
+}
+
+export const filterBrowserLoadFailureExceptions: BeforeSendFn = (event) => {
+  if (event?.event !== "$exception") return event;
+
+  const properties = event.properties;
+  const exceptionList = getEventProperty(properties, "$exception_list");
+
+  if (!Array.isArray(exceptionList)) return event;
+
+  const normalizedExceptionList = exceptionList.filter(isExceptionEntry);
+  const isStacklessSafariLoadFailure =
+    getEventProperty(properties, "$browser") === "Safari" &&
+    normalizedExceptionList.some(
+      (exception) =>
+        exception.type === "TypeError" && exception.value === "Load failed",
+    ) &&
+    !hasStackFrames(normalizedExceptionList);
+
+  return isStacklessSafariLoadFailure ? null : event;
+};
 
 export function initializeAnalytics(
   apiKey: string,
