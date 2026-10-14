@@ -7,7 +7,7 @@ export const siteTitle = "Rockbusters - Daily Cryptic Band Guessing Game";
 export const siteDescription =
   "Guess the band or artist from a daily cryptic clue in five tries. A new Rockbusters puzzle is available every day.";
 
-export const siteUrl = env.FETCH_SELF_URL;
+const siteUrl = env.FETCH_SELF_URL;
 
 export const defaultOgImageAlt =
   "Rockbusters daily cryptic band guessing game clue";

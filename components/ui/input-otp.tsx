@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { DashIcon } from "@radix-ui/react-icons";
 import { OTPInput, OTPInputContext } from "input-otp";
 
 import { cn } from "@/lib/utils";
@@ -80,20 +79,9 @@ const DummyInputOTPSlot = React.forwardRef<
 });
 DummyInputOTPSlot.displayName = "DummyInputOTPSlot";
 
-const InputOTPSeparator = React.forwardRef<
-  React.ElementRef<"div">,
-  React.ComponentPropsWithoutRef<"div">
->(({ ...props }, ref) => (
-  <div ref={ref} role="separator" {...props}>
-    <DashIcon />
-  </div>
-));
-InputOTPSeparator.displayName = "InputOTPSeparator";
-
 export {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-  InputOTPSeparator,
   DummyInputOTPSlot,
 };

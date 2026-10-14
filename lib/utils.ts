@@ -106,7 +106,7 @@ export function getCurrentItem() {
   };
 }
 
-export function GetServerTime() {
+function GetServerTime() {
   return { serverTime: new Date() };
 }
 
