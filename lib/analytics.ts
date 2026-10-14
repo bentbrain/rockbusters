@@ -1,6 +1,5 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import type { PostHog, PostHogConfig } from "posthog-js";
 
 type CaptureProperties = Record<string, boolean | number | string>;
@@ -8,37 +7,8 @@ type GameResult = "lost" | "won";
 
 let isAnalyticsEnabled = false;
 let posthogClientPromise: Promise<PostHog> | null = null;
-const analyticsEnabledSubscribers = new Set<() => void>();
-
-export function setAnalyticsEnabled(enabled: boolean) {
+function setAnalyticsEnabled(enabled: boolean) {
   isAnalyticsEnabled = enabled;
-  analyticsEnabledSubscribers.forEach((notify) => {
-    notify();
-  });
-}
-
-function subscribeToAnalyticsEnabled(notify: () => void) {
-  analyticsEnabledSubscribers.add(notify);
-
-  return () => {
-    analyticsEnabledSubscribers.delete(notify);
-  };
-}
-
-function getAnalyticsEnabledSnapshot() {
-  return isAnalyticsEnabled;
-}
-
-function getServerAnalyticsEnabledSnapshot() {
-  return false;
-}
-
-export function useAnalyticsEnabled() {
-  return useSyncExternalStore(
-    subscribeToAnalyticsEnabled,
-    getAnalyticsEnabledSnapshot,
-    getServerAnalyticsEnabledSnapshot,
-  );
 }
 
 export function initializeAnalytics(

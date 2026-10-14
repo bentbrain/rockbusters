@@ -4,7 +4,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { env } from "@/lib/env";
 import { questions } from "@/lib/questions";
 
-export const defaultAudioBaseUrl =
+const defaultAudioBaseUrl =
   "https://pub-28f3be4d403e42d09e69bafe4ec255bf.r2.dev";
 
 type AudioKind = "answer" | "question";
